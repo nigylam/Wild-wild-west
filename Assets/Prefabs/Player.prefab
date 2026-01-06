@@ -153,6 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6ea84fb83097f45a1887e22233142e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _movementForce: 1
+  _jumpForce: 5
+  _maxSpeed: 10
   _camera: {fileID: 0}
 --- !u!114 &1002907951762148761
 MonoBehaviour:
@@ -166,9 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80c4b155eec957489d03cc8cc15cc0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementForce: 1
-  _jumpForce: 10
-  _maxSpeed: 10
   _cameraRotator: {fileID: 177386980363529638}
 --- !u!114 &2909043290830168342
 MonoBehaviour:
@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _muzzle: {fileID: 5305711655454398032}
   _shootPrefab: {fileID: 4276133804322463168, guid: 4d093124ec357054188ff6fadaccea6f, type: 3}
+  _damage: 35
 --- !u!1 &7005428621924270116
 GameObject:
   m_ObjectHideFlags: 0
