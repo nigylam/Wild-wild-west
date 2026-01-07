@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerShooter : MonoBehaviour
+public class FireWeapon : Weapon
 {
     [SerializeField] private Transform _muzzle;
     [SerializeField] private ParticleSystem _shootPrefab;
-    [SerializeField] private float _damage;
 
     private Camera _camera;
     private float _maxShootDistance = 1000f;
@@ -15,7 +13,7 @@ public class PlayerShooter : MonoBehaviour
         _camera = camera;
     }
 
-    public void Shoot(InputAction.CallbackContext context)
+    public override void Attack()
     {
         Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
@@ -27,10 +25,10 @@ public class PlayerShooter : MonoBehaviour
         Vector3 direction = (hit.point - _muzzle.position).normalized;
 
         if(hit.collider.TryGetComponent(out Hitbox hitbox))
-        {
-            hitbox.ApplyDamage(_damage, hit);
-        }
+            hitbox.ApplyDamage(Damage, hit);
 
         Instantiate(_shootPrefab, _muzzle.position, Quaternion.LookRotation(direction));
     }
+
+
 }

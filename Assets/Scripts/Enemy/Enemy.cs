@@ -25,7 +25,6 @@ public class Enemy : MonoBehaviour
 
     private void OnDead()
     {
-        Debug.Log("");
         Released?.Invoke(this);
     }
 }
