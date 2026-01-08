@@ -50,27 +50,31 @@ public class FireWeapon : Weapon
         if (_canShoot == false)
             return;
 
-        _canShoot = false;
-        Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        Ray ray = _camera.ScreenPointToRay(screenCenter);
-        Physics.Raycast(ray, out RaycastHit hit);
-        Vector3 direction = (hit.point - _muzzle.position).normalized;
+        StartShootCooldown();
+
+        Vector2 screenCenter = new Vector2(0.5f, 0.5f);
+        Ray ray = _camera.ViewportPointToRay(screenCenter);
+        Vector3 targetPoint;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, _maxShootDistance))
+        {
+            targetPoint = hit.point;
+
+            if (hit.collider.TryGetComponent(out Hitbox hitbox))
+                hitbox.ApplyDamage(Damage, hit);
+        }
+        else
+        {
+            targetPoint = ray.origin + ray.direction * _maxShootDistance;
+        }
+
+        Vector3 direction = (targetPoint - _muzzle.position).normalized;
         Instantiate(_shootPrefab, _muzzle.position, Quaternion.LookRotation(direction));
-        PlayShot();
 
-        if (_shootCoolDown != null)
-            StopCoroutine(_shootCoolDown);
-
-        _shootCoolDown = StartCoroutine(ShootCoolDown());
-
-        if (hit.distance > _maxShootDistance)
-            return;
-
-        if (hit.collider.TryGetComponent(out Hitbox hitbox))
-            hitbox.ApplyDamage(Damage, hit);
+        PlayShotSound();
     }
 
-    private void PlayShot()
+    private void PlayShotSound()
     {
         _audioSource.clip = _shotSound;
         _audioSource.Play();
@@ -81,7 +85,17 @@ public class FireWeapon : Weapon
         _playReloadAfterShot = StartCoroutine(PlayReloadAfterShot());
     }
 
-    private IEnumerator ShootCoolDown()
+    private void StartShootCooldown()
+    {
+        _canShoot = false;
+
+        if (_shootCoolDown != null)
+            StopCoroutine(_shootCoolDown);
+
+        _shootCoolDown = StartCoroutine(ShootCooldown());
+    }
+
+    private IEnumerator ShootCooldown()
     {
         float time = 0;
 
@@ -97,9 +111,7 @@ public class FireWeapon : Weapon
     private IEnumerator PlayReloadAfterShot()
     {
         while (_audioSource.isPlaying)
-        {
             yield return null;
-        }
 
         _audioSource.clip = _reloadSound;
         _audioSource.Play();

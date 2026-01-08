@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<Transform> _spawnPoints;
     [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private Boss _bossPrefab;
+    [SerializeField] private Transform _target;
 
     private float _waitStep = 0.1f;
     private float _spawnZonePositionOffset = 0.5f;
@@ -112,6 +113,7 @@ public class EnemySpawner : MonoBehaviour
         enemy.Released += ReleaseEnemy;
         enemy.transform.SetParent(transform);
         enemy.transform.position = position;
+        enemy.Initialize(_target);
     }
 
     private void SpawnBoss(Vector3 position)
@@ -120,6 +122,7 @@ public class EnemySpawner : MonoBehaviour
         boss.Released += ReleaseBoss;
         boss.transform.SetParent(transform);
         boss.transform.position = position;
+        boss.Initialize(_target);
     }
 
     private void ReleaseEnemy(Enemy enemy)
