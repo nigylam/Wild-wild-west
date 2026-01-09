@@ -639,27 +639,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1309363671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &347618725 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8852585560245042899, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-  m_PrefabInstance: {fileID: 786476162}
-  m_PrefabAsset: {fileID: 0}
---- !u!111 &347618732
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347618725}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: a6ad68ee50216b14088e3b0f2c83b74a, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: a6ad68ee50216b14088e3b0f2c83b74a, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &522582873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,45 +999,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1622462727055537140, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: Damage
-      value: 35
-      objectReference: {fileID: 0}
     - target: {fileID: 5111759279425021446, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5111759279425021446, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5244733090401391942, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1510795420}
-    - target: {fileID: 5244733090401391942, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: _fireWeapon
+    - target: {fileID: 6891507815087306528, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
+      propertyPath: _attackSound
       value: 
-      objectReference: {fileID: 1132488070}
-    - target: {fileID: 5320225415867775823, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: m_Name
-      value: FireWeapon
+      objectReference: {fileID: 8300000, guid: b15eb1fa99ea4234b8ac43044ad1996b, type: 3}
+    - target: {fileID: 6891507815087306528, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
+      propertyPath: _cooldownTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6891507815087306528, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: Damage
-      value: 55
+      propertyPath: _attackTargets.m_Bits
+      value: 128
       objectReference: {fileID: 0}
-    - target: {fileID: 6891507815087306528, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      propertyPath: _attackAnimation
-      value: 
-      objectReference: {fileID: 347618732}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8852585560245042899, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 347618732}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
 --- !u!4 &801661409 stripped
 Transform:
@@ -1226,17 +1190,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4412301305224006363, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
   m_PrefabInstance: {fileID: 786476162}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1132488070 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1622462727055537140, guid: 9061ee6d9457fdf4197e554c83331213, type: 3}
-  m_PrefabInstance: {fileID: 786476162}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d82d2d6aaf3aa7a4393239b43b25ce32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1132595007
 GameObject:
   m_ObjectHideFlags: 3

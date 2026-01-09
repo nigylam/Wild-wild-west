@@ -1,40 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class FireWeapon : Weapon
 {
     [SerializeField] private Transform _muzzle;
-    [SerializeField] private ParticleSystem _shootPrefab;
-    [SerializeField] private float _fireRate;
-    [SerializeField] private AudioClip _shotSound;
+    [SerializeField] private ParticleSystem _shotPrefab;
     [SerializeField] private AudioClip _reloadSound;
 
-    private AudioSource _audioSource;
     private Camera _camera;
-    private Coroutine _shootCoolDown;
     private Coroutine _playReloadAfterShot;
     private float _maxShootDistance = 100f;
-    private bool _canShoot = true;
 
-    private void Awake()
+    protected override void OnDisable()
     {
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    private void OnEnable()
-    {
-        _canShoot = true;
-        _audioSource.Stop();
-    }
-
-    private void OnDisable()
-    {
-        _canShoot = true;
-        _audioSource.Stop();
-
-        if (_shootCoolDown != null)
-            StopCoroutine(_shootCoolDown);
+        base.OnDisable();
 
         if (_playReloadAfterShot != null)
             StopCoroutine(_playReloadAfterShot);
@@ -47,10 +26,12 @@ public class FireWeapon : Weapon
 
     public override void Attack()
     {
-        if (_canShoot == false)
+        if (CanAttack == false)
             return;
 
-        StartShootCooldown();
+        base.Attack();
+
+        Debug.Log("continue in child");
 
         Vector2 screenCenter = new Vector2(0.5f, 0.5f);
         Ray ray = _camera.ViewportPointToRay(screenCenter);
@@ -69,15 +50,12 @@ public class FireWeapon : Weapon
         }
 
         Vector3 direction = (targetPoint - _muzzle.position).normalized;
-        Instantiate(_shootPrefab, _muzzle.position, Quaternion.LookRotation(direction));
-
-        PlayShotSound();
+        Instantiate(_shotPrefab, _muzzle.position, Quaternion.LookRotation(direction));
     }
 
-    private void PlayShotSound()
+    protected override void PlaySound()
     {
-        _audioSource.clip = _shotSound;
-        _audioSource.Play();
+        base.PlaySound();
 
         if (_playReloadAfterShot != null)
             StopCoroutine(_playReloadAfterShot);
@@ -85,35 +63,12 @@ public class FireWeapon : Weapon
         _playReloadAfterShot = StartCoroutine(PlayReloadAfterShot());
     }
 
-    private void StartShootCooldown()
-    {
-        _canShoot = false;
-
-        if (_shootCoolDown != null)
-            StopCoroutine(_shootCoolDown);
-
-        _shootCoolDown = StartCoroutine(ShootCooldown());
-    }
-
-    private IEnumerator ShootCooldown()
-    {
-        float time = 0;
-
-        while (time < _fireRate)
-        {
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        _canShoot = true;
-    }
-
     private IEnumerator PlayReloadAfterShot()
     {
-        while (_audioSource.isPlaying)
+        while (AudioSource.isPlaying)
             yield return null;
 
-        _audioSource.clip = _reloadSound;
-        _audioSource.Play();
+        AudioSource.clip = _reloadSound;
+        AudioSource.Play();
     }
 }

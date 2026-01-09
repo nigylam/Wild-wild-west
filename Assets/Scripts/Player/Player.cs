@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Health))]
 [RequireComponent(typeof(PlayerMover))]
 public class Player : MonoBehaviour
 {
@@ -17,9 +18,11 @@ public class Player : MonoBehaviour
     private ThirdPersonActions _actions;
     private PlayerMover _mover;
     private Weapon _activeWeapon;
+    private Health _health;
 
     private void Awake()
     {
+        _health = GetComponent<Health>();
         _actions = new ThirdPersonActions();
         _mover = GetComponent<PlayerMover>();
         _fireWeapon.Initialize(_camera);
@@ -32,12 +35,14 @@ public class Player : MonoBehaviour
     {
         _actions.Player.Attack.started += OnAttack;
         _actions.Player.Changeweapon.started += OnChangeWeapon;
+        _health.Dead += OnDead;
     }
 
     private void OnDisable()
     {
         _actions.Player.Attack.started -= OnAttack;
         _actions.Player.Changeweapon.started -= OnChangeWeapon;
+        _health.Dead -= OnDead;
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -58,5 +63,9 @@ public class Player : MonoBehaviour
         _activeWeapon.gameObject.SetActive(false);
         _activeWeapon = weapon;
         _activeWeapon.gameObject.SetActive(true);
+    }
+
+    private void OnDead()
+    {
     }
 }

@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 2982786019509024402}
   - component: {fileID: 5244733090401391942}
   - component: {fileID: 1002907951762148761}
-  m_Layer: 0
+  - component: {fileID: 4968674354726318449}
+  - component: {fileID: 758333636879283362}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -172,6 +174,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraRotator: {fileID: 177386980363529638}
+--- !u!114 &4968674354726318449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111759279425021446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526f2b1d6dfa65548996fc5c75b84f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+--- !u!114 &758333636879283362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111759279425021446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6a03cb9bac93c49bcb2c1c31ad1769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageMultiplier: 1
+  _health: {fileID: 4968674354726318449}
 --- !u!1 &7005428621924270116
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +213,7 @@ GameObject:
   - component: {fileID: 1169842145556859064}
   - component: {fileID: 7901563875123921884}
   - component: {fileID: 1907008878846747334}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4412301305224006363}
   - component: {fileID: 177386980363529638}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,9 +366,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 239203343400329704}
     m_Modifications:
+    - target: {fileID: 282060324301476181, guid: c41b3a166c59f1d4f8c8cb6bba07495b, type: 3}
+      propertyPath: _attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b15eb1fa99ea4234b8ac43044ad1996b, type: 3}
     - target: {fileID: 2779611778249365670, guid: c41b3a166c59f1d4f8c8cb6bba07495b, type: 3}
       propertyPath: m_Name
       value: MeleeWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2779611778249365670, guid: c41b3a166c59f1d4f8c8cb6bba07495b, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6773094151748303391, guid: c41b3a166c59f1d4f8c8cb6bba07495b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -410,9 +447,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 239203343400329704}
     m_Modifications:
+    - target: {fileID: 144927232380864267, guid: a74810608552c5047a422ebfecb7be55, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2518733002549764305, guid: a74810608552c5047a422ebfecb7be55, type: 3}
       propertyPath: m_Name
       value: FireWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2518733002549764305, guid: a74810608552c5047a422ebfecb7be55, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8873501507511157425, guid: a74810608552c5047a422ebfecb7be55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -454,6 +499,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9053730315502184554, guid: a74810608552c5047a422ebfecb7be55, type: 3}
+      propertyPath: _attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9d8c550214f49374a9a1c5e7fe72963c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

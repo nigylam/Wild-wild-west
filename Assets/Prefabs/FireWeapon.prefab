@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 35
+  _cooldownTime: 1
+  _attackSound: {fileID: 0}
   _muzzle: {fileID: 5200241305615710771}
-  _shootPrefab: {fileID: 4276133804322463168, guid: 4d093124ec357054188ff6fadaccea6f, type: 3}
-  _fireRate: 1
-  _shotSound: {fileID: 8300000, guid: 9d8c550214f49374a9a1c5e7fe72963c, type: 3}
+  _shotPrefab: {fileID: 4276133804322463168, guid: 4d093124ec357054188ff6fadaccea6f, type: 3}
   _reloadSound: {fileID: 8300000, guid: 7ab8e68d144ec1949871de23acc349c1, type: 3}
 --- !u!82 &2848385691024334885
 AudioSource:
