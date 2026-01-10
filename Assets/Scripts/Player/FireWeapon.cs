@@ -31,8 +31,6 @@ public class FireWeapon : Weapon
 
         base.Attack();
 
-        Debug.Log("continue in child");
-
         Vector2 screenCenter = new Vector2(0.5f, 0.5f);
         Ray ray = _camera.ViewportPointToRay(screenCenter);
         Vector3 targetPoint;

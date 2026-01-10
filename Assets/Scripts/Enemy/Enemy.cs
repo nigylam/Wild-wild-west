@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private Health _health;
     private EnemyMover _enemyMover;
 
-    public event Action<Enemy> Released;
+    public event Action<Enemy> Dead;
 
     private void Awake()
     {
@@ -33,6 +33,6 @@ public class Enemy : MonoBehaviour
 
     private void OnDead()
     {
-        Released?.Invoke(this);
+        Dead?.Invoke(this);
     }
 }

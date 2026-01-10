@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class CameraRotator : MonoBehaviour
 {
+    [Header("Rotation")]
     [SerializeField] private float _sensitivity = 0.1f;
     [SerializeField] private float _minPitch = -40f;
     [SerializeField] private float _maxPitch = 70f;
+
+    [Header("Moving")]
     [SerializeField] private float _minYOffset = -0.3f;
     [SerializeField] private float _maxYOffset = 0.6f;
     [SerializeField] private float _minZOffset = -0.4f;
@@ -15,8 +18,8 @@ public class CameraRotator : MonoBehaviour
 
     private float _yaw;
     private float _pitch;
-
     private ThirdPersonActions _actions;
+
     public float Yaw => _yaw;
 
     private void Awake()

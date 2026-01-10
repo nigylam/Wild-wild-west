@@ -2,21 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private List<Transform> _spawnPoints;
-    [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private Boss _bossPrefab;
     [SerializeField] private Transform _target;
+    [SerializeField] private EnemyPool _enemyPool;
+    [SerializeField] private EnemyPool _bossPool;
 
     private float _waitStep = 0.1f;
     private float _spawnZonePositionOffset = 0.5f;
-    private ObjectPool<Enemy> _enemyPool;
-    private ObjectPool<Boss> _bossPool;
-    private int _poolCapacity = 20;
-    private int _poolMaxSize = 50;
     private WaitForSeconds _spawnWait;
     private Coroutine _spawnCoroutine;
 
@@ -25,26 +20,18 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         _spawnWait = new WaitForSeconds(_waitStep);
+    }
 
-        _enemyPool = new ObjectPool<Enemy>(
-            createFunc: () => Instantiate(_enemyPrefab),
-            actionOnGet: (obj) => obj.gameObject.SetActive(true),
-            actionOnRelease: (obj) => obj.gameObject.SetActive(false),
-            actionOnDestroy: (obj) => Destroy(obj.gameObject),
-            collectionCheck: true,
-            defaultCapacity: _poolCapacity,
-            maxSize: _poolMaxSize
-        );
+    private void OnEnable()
+    {
+        _enemyPool.EnemyKilled += OnEnemyKilled;
+        _bossPool.EnemyKilled += OnEnemyKilled;
+    }
 
-        _bossPool = new ObjectPool<Boss>(
-            createFunc: () => Instantiate(_bossPrefab),
-            actionOnGet: (obj) => obj.gameObject.SetActive(true),
-            actionOnRelease: (obj) => obj.gameObject.SetActive(false),
-            actionOnDestroy: (obj) => Destroy(obj.gameObject),
-            collectionCheck: true,
-            defaultCapacity: _poolCapacity,
-            maxSize: _poolMaxSize
-        );
+    private void OnDisable()
+    {
+        _enemyPool.EnemyKilled -= OnEnemyKilled;
+        _bossPool.EnemyKilled -= OnEnemyKilled;
     }
 
     public void StartRound(float roundLength, int enemiesCount, int bossesCount, float startSpawnDelay)
@@ -55,6 +42,13 @@ public class EnemySpawner : MonoBehaviour
             StopCoroutine(_spawnCoroutine);
 
         _spawnCoroutine = StartCoroutine(RepeatingSpawn(spawnRate, enemiesCount, bossesCount, startSpawnDelay));
+    }
+
+    public void Restart()
+    {
+        StopCoroutine(_spawnCoroutine);
+        _enemyPool.Restart();
+        _bossPool.Restart();
     }
 
     private IEnumerator RepeatingSpawn(float spawnRate, int enemiesCount, int bossesCount, float startSpawnDelay)
@@ -102,40 +96,10 @@ public class EnemySpawner : MonoBehaviour
              );
 
         if (enemyType == EnemyType.Enemy)
-            SpawnEnemy(position);
+            _enemyPool.Spawn(position, _target);
         else
-            SpawnBoss(position);
+            _bossPool.Spawn(position, _target);
     }
 
-    private void SpawnEnemy(Vector3 position)
-    {
-        Enemy enemy = _enemyPool.Get();
-        enemy.Released += ReleaseEnemy;
-        enemy.transform.SetParent(transform);
-        enemy.transform.position = position;
-        enemy.Initialize(_target);
-    }
-
-    private void SpawnBoss(Vector3 position)
-    {
-        Boss boss = _bossPool.Get();
-        boss.Released += ReleaseBoss;
-        boss.transform.SetParent(transform);
-        boss.transform.position = position;
-        boss.Initialize(_target);
-    }
-
-    private void ReleaseEnemy(Enemy enemy)
-    {
-        enemy.Released -= ReleaseEnemy;
-        _enemyPool.Release(enemy);
-        EnemyKilled?.Invoke();
-    }
-
-    private void ReleaseBoss(Enemy boss)
-    {
-        boss.Released -= ReleaseBoss;
-        _bossPool.Release(boss as Boss);
-        EnemyKilled?.Invoke();
-    }
+    private void OnEnemyKilled() => EnemyKilled?.Invoke();
 }

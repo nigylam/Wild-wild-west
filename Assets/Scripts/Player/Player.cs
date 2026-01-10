@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,11 +15,15 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private FireWeapon _fireWeapon;
     [SerializeField] private MeleeWeapon _meleeWeapon;
+    [SerializeField] private CameraRotator _cameraRotator;
 
     private ThirdPersonActions _actions;
     private PlayerMover _mover;
     private Weapon _activeWeapon;
     private Health _health;
+    private Vector3 _startPosition;
+
+    public event Action Dead;
 
     private void Awake()
     {
@@ -26,7 +31,7 @@ public class Player : MonoBehaviour
         _actions = new ThirdPersonActions();
         _mover = GetComponent<PlayerMover>();
         _fireWeapon.Initialize(_camera);
-        _mover.Initialize(_camera, _actions, _movementForce, _jumpForce, _maxSpeed);
+        _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
         _activeWeapon = _fireWeapon;
         _meleeWeapon.gameObject.SetActive(false);
     }
@@ -38,11 +43,24 @@ public class Player : MonoBehaviour
         _health.Dead += OnDead;
     }
 
+    private void Start()
+    {
+        _startPosition = transform.position;
+    }
+
     private void OnDisable()
     {
         _actions.Player.Attack.started -= OnAttack;
         _actions.Player.Changeweapon.started -= OnChangeWeapon;
         _health.Dead -= OnDead;
+    }
+
+    public void Restart()
+    {
+        _mover.enabled = true;
+        _cameraRotator.enabled = true;
+        _health.Restart();
+        transform.position = _startPosition;
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -67,5 +85,8 @@ public class Player : MonoBehaviour
 
     private void OnDead()
     {
+        _mover.enabled = false;
+        _cameraRotator.enabled = false;
+        Dead?.Invoke();
     }
 }

@@ -4,9 +4,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMover : MonoBehaviour
 {
-    [SerializeField] private CameraRotator _cameraRotator;
-
     private Camera _camera;
+    private CameraRotator _cameraRotator;
     private ThirdPersonActions _actions;
     private InputAction _moveAction;
     private Rigidbody _rigidbody;
@@ -20,8 +19,7 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
     }
 
     private void OnEnable()
@@ -41,7 +39,6 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         Vector3 camForward = Vector3.ProjectOnPlane(_camera.transform.forward, Vector3.up).normalized;
         Vector3 camRight = Vector3.ProjectOnPlane(_camera.transform.right, Vector3.up).normalized;
 
@@ -64,9 +61,10 @@ public class PlayerMover : MonoBehaviour
         RotateToCamera();
     }
 
-    public void Initialize(Camera camera, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
+    public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
     {
         _camera = camera;
+        _cameraRotator = cameraRotator;
         _actions = actions;
         _moveAction = _actions.Player.Move;
         _movementForce = movementForce;
