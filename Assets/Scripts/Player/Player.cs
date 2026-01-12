@@ -65,6 +65,12 @@ public class Player : MonoBehaviour
         transform.position = _startPosition;
     }
 
+    public void DisableControl()
+    {
+        _mover.enabled = false;
+        _cameraRotator.enabled = false;
+    }
+
     private void OnAttack(InputAction.CallbackContext context)
     {
         _activeWeapon.Attack();
@@ -87,8 +93,6 @@ public class Player : MonoBehaviour
 
     private void OnDead()
     {
-        _mover.enabled = false;
-        _cameraRotator.enabled = false;
         Dead?.Invoke();
     }
 }

@@ -72,7 +72,10 @@ public class Game : MonoBehaviour
     private void ProcessRounds()
     {
         if (_roundCounter.Current >= _roundsCount)
+        {
+            End(true);
             return;
+        }
 
         _roundCounter.Increase();
         _roundEnemiesCount += _roundEnemiesIncrement;
@@ -83,7 +86,19 @@ public class Game : MonoBehaviour
 
     private void OnPlayerDead()
     {
+        End(false);
+    }
+
+    public void End(bool isWin)
+    {
+        _player.DisableControl();
         _overlay.gameObject.SetActive(true);
+
+        if (isWin)
+            _overlay.SetWinText();
+        else
+            _overlay.SetLoseText();
+
         _HUD.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
