@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RoundCounter))]
 public class Game : MonoBehaviour
 {
     [Header("Stats")]
@@ -18,11 +17,18 @@ public class Game : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private OverlayMenu _overlay;
     [SerializeField] private GameObject _HUD;
+    [SerializeField] private Bar _roundBar;
 
+    private RoundCounter _roundCounter;
     private int _roundEnemiesCount;
     private float _roundLength;
     private int _enemiesTotal;
-    private int _currentRound = 1;
+
+    private void Awake()
+    {
+        _roundCounter = GetComponent<RoundCounter>();
+        _roundBar.Initialize(_roundCounter);
+    }
 
     private void OnEnable()
     {
@@ -50,7 +56,7 @@ public class Game : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        _currentRound = 1;
+        _roundCounter.Reset();
         _roundEnemiesCount = _roundStartEnemies;
         _roundLength = _roundStartLength;
         _enemiesTotal = _roundEnemiesCount + _bossesCount;
@@ -65,13 +71,13 @@ public class Game : MonoBehaviour
 
     private void ProcessRounds()
     {
-        if (_currentRound >= _roundsCount)
+        if (_roundCounter.Current >= _roundsCount)
             return;
 
-        _currentRound++;
+        _roundCounter.Increase();
         _roundEnemiesCount += _roundEnemiesIncrement;
         _roundLength += _roundLengthIncrement;
-        _enemiesTotal = _roundEnemiesCount +_bossesCount;
+        _enemiesTotal = _roundEnemiesCount + _bossesCount;
         _enemySpawner.StartRound(_roundLength, _roundEnemiesCount, _bossesCount, _roundStartDelay);
     }
 

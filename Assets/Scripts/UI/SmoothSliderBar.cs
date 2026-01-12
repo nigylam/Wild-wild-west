@@ -12,7 +12,7 @@ public class SmoothSliderBar : SliderBar
 
     public override void ChangeValue()
     {
-        float targetValue = Convert.ToSingle(Health.Current) / Health.Max;
+        float targetValue = Convert.ToSingle(Stat.Current) / Stat.Max;
 
         if (_smoothChange != null)
             StopCoroutine(_smoothChange);
@@ -20,9 +20,9 @@ public class SmoothSliderBar : SliderBar
         _smoothChange = StartCoroutine(SmoothChangeValue(targetValue));
     }
 
-    protected override void Initialize()
+    public override void Initialize(ICountable stat)
     {
-        base.Initialize();
+        base.Initialize(stat);
         _smoothStepDelay = new WaitForSeconds(_changeSpeed);
     }
 

@@ -2,21 +2,21 @@ using UnityEngine;
 
 public abstract class Bar : MonoBehaviour
 {
-    [SerializeField] protected Health Health;
-
-    private void OnEnable()
-    {
-        Health.Changed += ChangeValue;
-    }
+    protected ICountable Stat;
 
     private void OnDisable()
     {
-        Health.Changed -= ChangeValue;
+        if (Stat != null)
+            Stat.Changed -= ChangeValue;
     }
 
-    private void Start()
+    public virtual void Initialize(ICountable stat)
     {
-        ChangeValue();
+        if (Stat != null)
+            Stat.Changed -= ChangeValue;
+
+        Stat = stat;
+        stat.Changed += ChangeValue;
     }
 
     public abstract void ChangeValue();

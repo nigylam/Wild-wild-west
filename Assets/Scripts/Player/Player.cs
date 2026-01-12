@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private FireWeapon _fireWeapon;
     [SerializeField] private MeleeWeapon _meleeWeapon;
     [SerializeField] private CameraRotator _cameraRotator;
+    [SerializeField] private Bar _healthBar;
 
     private ThirdPersonActions _actions;
     private PlayerMover _mover;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
         _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
         _activeWeapon = _fireWeapon;
         _meleeWeapon.gameObject.SetActive(false);
+        _healthBar.Initialize(_health);
     }
 
     private void OnEnable()

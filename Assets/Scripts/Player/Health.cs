@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IDamageable
+public class Health : MonoBehaviour, IDamageable, ICountable
 {
     [SerializeField] private float _maxHealth = 100f;
 
@@ -10,8 +10,17 @@ public class Health : MonoBehaviour, IDamageable
     public event Action Dead;
     public event Action Changed;
 
-    public float Current => _currentHealth;
     public float Max => _maxHealth;
+
+    public float Current
+    {
+        get { return _currentHealth; }
+        private set
+        {
+            _currentHealth = value;
+            Changed?.Invoke();
+        }
+    }
 
     private void OnEnable()
     {
@@ -20,16 +29,16 @@ public class Health : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
-        _currentHealth -= damage;
+        Current -= damage;
         Changed?.Invoke();
 
-        if (_currentHealth <= 0)
+        if (Current <= 0)
             Dead?.Invoke();
     }
 
     public void Restart()
     {
-        _currentHealth = _maxHealth;
+        Current = _maxHealth;
         Changed?.Invoke();
     }
 }
