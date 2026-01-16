@@ -24,7 +24,7 @@ public class FireWeapon : Weapon
         _camera = camera;
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         if (CanAttack == false)
             return;

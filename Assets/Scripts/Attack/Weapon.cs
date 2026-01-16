@@ -19,7 +19,7 @@ public abstract class Weapon : MonoBehaviour
         AudioSource = GetComponent<AudioSource>();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         CanAttack = true;
         AudioSource.Stop();
@@ -34,7 +34,18 @@ public abstract class Weapon : MonoBehaviour
             StopCoroutine(_cooldown);
     }
 
-    public virtual void Attack()
+    public bool TryAttack()
+    {
+        if(CanAttack)
+        {
+            Attack();
+            return true;
+        }
+
+        return false;
+    }
+
+    protected virtual void Attack()
     {
         StartCooldown();
         PlaySound();

@@ -13,16 +13,14 @@ public class Player : MonoBehaviour
 
     [Header("Links")]
     [SerializeField] private Camera _camera;
-    [SerializeField] private FireWeapon _fireWeapon;
-    [SerializeField] private MeleeWeapon _meleeWeapon;
     [SerializeField] private CameraRotator _cameraRotator;
     [SerializeField] private Bar _healthBar;
 
     private ThirdPersonActions _actions;
     private PlayerMover _mover;
-    private Weapon _activeWeapon;
     private Health _health;
-    private PlayerAnimation _animation;
+    private PlayerAnimator _animator;
+    private PlayerAttacker _attacker;
     private Vector3 _startPosition;
 
     public event Action Dead;
@@ -32,20 +30,19 @@ public class Player : MonoBehaviour
         _health = GetComponent<Health>();
         _actions = new ThirdPersonActions();
         _mover = GetComponent<PlayerMover>();
-        _animation = GetComponent<PlayerAnimation>();
-        _fireWeapon.Initialize(_camera);
+        _animator = GetComponent<PlayerAnimator>();
+        _attacker = GetComponent<PlayerAttacker>();
+        _attacker.Initialize(_actions, _camera);
         _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
-        _animation.Initialize(_actions);
-        _activeWeapon = _fireWeapon;
-        _meleeWeapon.gameObject.SetActive(false);
+        _animator.Initialize(_actions);
         _healthBar.Initialize(_health);
     }
 
     private void OnEnable()
     {
-        _actions.Player.Attack.started += OnAttack;
-        _actions.Player.Changeweapon.started += OnChangeWeapon;
         _health.Dead += OnDead;
+        _attacker.Attack += _animator.OnAttack;
+        _attacker.ChangeWeapon += _animator.OnChangeWeapon;
     }
 
     private void Start()
@@ -55,8 +52,6 @@ public class Player : MonoBehaviour
 
     private void OnDisable()
     {
-        _actions.Player.Attack.started -= OnAttack;
-        _actions.Player.Changeweapon.started -= OnChangeWeapon;
         _health.Dead -= OnDead;
     }
 
@@ -72,26 +67,6 @@ public class Player : MonoBehaviour
     {
         _mover.enabled = false;
         _cameraRotator.enabled = false;
-    }
-
-    private void OnAttack(InputAction.CallbackContext context)
-    {
-        _activeWeapon.Attack();
-    }
-
-    private void OnChangeWeapon(InputAction.CallbackContext context)
-    {
-        if (_activeWeapon == _fireWeapon)
-            SwitchWeapon(_meleeWeapon);
-        else
-            SwitchWeapon(_fireWeapon);
-    }
-
-    private void SwitchWeapon(Weapon weapon)
-    {
-        _activeWeapon.gameObject.SetActive(false);
-        _activeWeapon = weapon;
-        _activeWeapon.gameObject.SetActive(true);
     }
 
     private void OnDead()

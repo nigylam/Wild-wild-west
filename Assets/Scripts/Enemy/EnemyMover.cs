@@ -116,7 +116,7 @@ public class EnemyMover : MonoBehaviour
         {
             _agent.isStopped = true;
             RotateTowardsTarget();
-            _weapon.Attack();
+            _weapon.TryAttack();
         }
         else
         {

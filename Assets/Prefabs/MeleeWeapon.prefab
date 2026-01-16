@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6773094151748303391}
   - component: {fileID: 8141387563975433986}
   - component: {fileID: 282060324301476181}
-  - component: {fileID: 5112273457943255605}
   - component: {fileID: 3553368113289961823}
   m_Layer: 0
   m_Name: MeleeWeapon
@@ -72,31 +71,11 @@ MonoBehaviour:
   Damage: 55
   _cooldownTime: 1
   _attackSound: {fileID: 0}
-  _animator: {fileID: 5112273457943255605}
+  _eventSender: {fileID: 0}
+  _animator: {fileID: 0}
   _attackTargets:
     serializedVersion: 2
     m_Bits: 0
---- !u!95 &5112273457943255605
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2779611778249365670}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 19073009f7f367e45960c787dc8b46c2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!82 &3553368113289961823
 AudioSource:
   m_ObjectHideFlags: 0
