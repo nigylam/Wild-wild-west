@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -76,29 +77,27 @@ public class EnemySpawner : MonoBehaviour
     {
         Transform spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
 
-        Vector3 spawnPointPosition = spawnPoint.transform.position;
+        if (enemyType == EnemyType.Enemy)
+            _enemyPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
+        else
+            _bossPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
 
         Vector3 position = new
             (
                 UnityEngine.Random.Range
                 (
-                    spawnPointPosition.x - _spawnZonePositionOffset,
-                    spawnPointPosition.x + _spawnZonePositionOffset
+                    spawnPoint.position.x - _spawnZonePositionOffset,
+                    spawnPoint.position.x + _spawnZonePositionOffset
                 ),
 
-                spawnPointPosition.y,
+                spawnPoint.position.y,
 
                 UnityEngine.Random.Range
                 (
-                    spawnPointPosition.z - _spawnZonePositionOffset,
-                    spawnPointPosition.z + _spawnZonePositionOffset
+                    spawnPoint.position.z - _spawnZonePositionOffset,
+                    spawnPoint.position.z + _spawnZonePositionOffset
                 )
              );
-
-        if (enemyType == EnemyType.Enemy)
-            _enemyPool.Spawn(position, _target);
-        else
-            _bossPool.Spawn(position, _target);
     }
 
     private void OnEnemyKilled() => EnemyKilled?.Invoke();

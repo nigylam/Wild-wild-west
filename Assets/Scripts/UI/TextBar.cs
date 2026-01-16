@@ -6,14 +6,10 @@ public class TextBar : Bar
 {
     private TextMeshProUGUI _text;
 
-    private void Awake()
-    {
-        _text = GetComponent<TextMeshProUGUI>();
-    }
-
     public override void Initialize(ICountable stat)
     {
         base.Initialize(stat);
+        _text = GetComponent<TextMeshProUGUI>();
         ChangeValue();
     }
 

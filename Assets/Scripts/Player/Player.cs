@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     private PlayerMover _mover;
     private Weapon _activeWeapon;
     private Health _health;
+    private PlayerAnimation _animation;
     private Vector3 _startPosition;
 
     public event Action Dead;
@@ -31,8 +32,10 @@ public class Player : MonoBehaviour
         _health = GetComponent<Health>();
         _actions = new ThirdPersonActions();
         _mover = GetComponent<PlayerMover>();
+        _animation = GetComponent<PlayerAnimation>();
         _fireWeapon.Initialize(_camera);
         _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
+        _animation.Initialize(_actions);
         _activeWeapon = _fireWeapon;
         _meleeWeapon.gameObject.SetActive(false);
         _healthBar.Initialize(_health);

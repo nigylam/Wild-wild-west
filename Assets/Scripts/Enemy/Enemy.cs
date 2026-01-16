@@ -25,14 +25,18 @@ public class Enemy : MonoBehaviour
         _health.Dead -= OnDead;
     }
 
-    public void Initialize(Transform target)
+    public void Initialize(Transform target, Transform parrent, Vector3 position, Quaternion rotation)
     {
         _enemyMover = GetComponent<EnemyMover>();
         _enemyMover.Initialize(target);
+        transform.SetParent(parrent);
+        transform.position = position;
+        transform.rotation = rotation;
     }
 
     private void OnDead()
     {
         Dead?.Invoke(this);
     }
+
 }

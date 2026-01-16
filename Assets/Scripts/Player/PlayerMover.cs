@@ -19,7 +19,6 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-
     }
 
     private void OnEnable()
@@ -39,6 +38,25 @@ public class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Move();
+        RotateToCamera();
+    }
+
+    public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
+    {
+        _camera = camera;
+        _cameraRotator = cameraRotator;
+        _actions = actions;
+        _moveAction = _actions.Player.Move;
+        _movementForce = movementForce;
+        _jumpForce = jumpForce;
+        _maxSpeed = maxSpeed;
+        _actions.Player.Jump.started += OnJump;
+        _actions.Enable();
+    }
+
+    private void Move()
+    {
         Vector3 camForward = Vector3.ProjectOnPlane(_camera.transform.forward, Vector3.up).normalized;
         Vector3 camRight = Vector3.ProjectOnPlane(_camera.transform.right, Vector3.up).normalized;
 
@@ -57,21 +75,6 @@ public class PlayerMover : MonoBehaviour
 
         if (horizontalVelocity.sqrMagnitude > _maxSpeed * _maxSpeed)
             _rigidbody.velocity = horizontalVelocity.normalized * _maxSpeed + Vector3.up * _rigidbody.velocity.y;
-
-        RotateToCamera();
-    }
-
-    public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
-    {
-        _camera = camera;
-        _cameraRotator = cameraRotator;
-        _actions = actions;
-        _moveAction = _actions.Player.Move;
-        _movementForce = movementForce;
-        _jumpForce = jumpForce;
-        _maxSpeed = maxSpeed;
-        _actions.Player.Jump.started += OnJump;
-        _actions.Enable();
     }
 
     private void RotateToCamera()
