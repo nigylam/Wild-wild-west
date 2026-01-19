@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class PlayerAnimator : MonoBehaviour
@@ -10,8 +11,10 @@ public class PlayerAnimator : MonoBehaviour
     private readonly int AnimatorFire = Animator.StringToHash("Attack");
     private readonly int AnimatorJump = Animator.StringToHash("Jump");
     private readonly int AnimatorChangeWeapon = Animator.StringToHash("ChangeWeapon");
+    private readonly float RigMaxWeight = 1;
 
     [SerializeField] private Animator _animator;
+    [SerializeField] private Rig _rig;
 
     private ThirdPersonActions _actions;
     private InputAction _moveAction;
@@ -40,9 +43,16 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetTrigger(AnimatorFire);
     }
 
-    public void OnChangeWeapon()
+    public void OnMeleeWeaponChosen()
     {
         _animator.SetTrigger(AnimatorChangeWeapon);
+        _rig.weight = 0;
+    }
+
+    public void OnFireWeaponChosen()
+    {
+        _animator.SetTrigger(AnimatorChangeWeapon);
+        _rig.weight = RigMaxWeight;
     }
 
     private void OnJump(InputAction.CallbackContext context)

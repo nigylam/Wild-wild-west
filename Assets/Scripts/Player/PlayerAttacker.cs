@@ -16,7 +16,8 @@ public class PlayerAttacker : MonoBehaviour
     private bool _canSwitchWeapon = true;
 
     public event Action Attack;
-    public event Action ChangeWeapon;
+    public event Action MeleeWeaponChosen;
+    public event Action FireWeaponChosen;
 
     private void OnEnable()
     {
@@ -62,11 +63,15 @@ public class PlayerAttacker : MonoBehaviour
             return;
 
         if (_activeWeapon == _fireWeapon)
+        {
             SwitchWeapon(_meleeWeapon);
+            MeleeWeaponChosen?.Invoke();
+        }
         else
+        {
             SwitchWeapon(_fireWeapon);
-
-        ChangeWeapon?.Invoke();
+            FireWeaponChosen?.Invoke();
+        }
     }
 
     private void SwitchWeapon(Weapon weapon)

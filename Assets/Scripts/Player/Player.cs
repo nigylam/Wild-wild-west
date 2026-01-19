@@ -42,7 +42,8 @@ public class Player : MonoBehaviour
     {
         _health.Dead += OnDead;
         _attacker.Attack += _animator.OnAttack;
-        _attacker.ChangeWeapon += _animator.OnChangeWeapon;
+        _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
+        _attacker.FireWeaponChosen += _animator.OnFireWeaponChosen;
     }
 
     private void Start()
