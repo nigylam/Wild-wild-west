@@ -40,6 +40,7 @@ public class PlayerMover : MonoBehaviour
     {
         Move();
         RotateToCamera();
+        RotateTowardsAim(GetAimDirection());
     }
 
     public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
@@ -53,6 +54,20 @@ public class PlayerMover : MonoBehaviour
         _maxSpeed = maxSpeed;
         _actions.Player.Jump.started += OnJump;
         _actions.Enable();
+    }
+
+    private void RotateTowardsAim(Vector3 aimDirection)
+    {
+        aimDirection.y = 0f;
+
+        if (aimDirection.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion targetRot = Quaternion.LookRotation(aimDirection);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            1f * Time.deltaTime);
     }
 
     private void Move()
@@ -75,6 +90,14 @@ public class PlayerMover : MonoBehaviour
 
         if (horizontalVelocity.sqrMagnitude > _maxSpeed * _maxSpeed)
             _rigidbody.velocity = horizontalVelocity.normalized * _maxSpeed + Vector3.up * _rigidbody.velocity.y;
+    }
+
+    Vector3 GetAimDirection()
+    {
+        return Vector3.ProjectOnPlane(
+            _camera.transform.forward,
+            Vector3.up
+        );
     }
 
     private void RotateToCamera()
