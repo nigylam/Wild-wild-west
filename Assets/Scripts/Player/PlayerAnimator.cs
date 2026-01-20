@@ -26,16 +26,10 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool(AnimatorIsMoving, _moveAction.ReadValue<Vector2>() != new Vector2(0, 0));
     }
 
-    private void OnDisable()
-    {
-        _actions.Player.Jump.started -= OnJump;
-    }
-
     public void Initialize(ThirdPersonActions actions)
     {
         _actions = actions;
         _moveAction = _actions.Player.Move;
-        _actions.Player.Jump.started += OnJump;
     }
 
     public void OnAttack()
@@ -55,7 +49,7 @@ public class PlayerAnimator : MonoBehaviour
         _rig.weight = RigMaxWeight;
     }
 
-    private void OnJump(InputAction.CallbackContext context)
+    public void OnJump()
     {
         _animator.SetTrigger(AnimatorJump);
     }

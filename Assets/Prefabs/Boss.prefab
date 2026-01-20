@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3318948783426821689
 Transform:
   m_ObjectHideFlags: 0
@@ -144,6 +144,7 @@ MonoBehaviour:
   Damage: 30
   _cooldownTime: 1
   _attackSound: {fileID: 8300000, guid: b15eb1fa99ea4234b8ac43044ad1996b, type: 3}
+  _eventSender: {fileID: 0}
   _animator: {fileID: 2694201907443448576}
   _attackTargets:
     serializedVersion: 2
@@ -321,7 +322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackRange: 2.3
-  _weapon: {fileID: 8869352645331594622}
+  _bridgeLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!195 &6644976001775460222
 NavMeshAgent:
   m_ObjectHideFlags: 0

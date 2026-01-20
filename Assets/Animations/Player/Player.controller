@@ -240,7 +240,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -3206531237166490384}
-    m_Position: {x: 280, y: 230, z: 0}
+    m_Position: {x: 310, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3669629076016480862}
     m_Position: {x: 550, y: -120, z: 0}
@@ -252,7 +252,7 @@ AnimatorStateMachine:
     m_Position: {x: 430, y: -340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3072681162349630839}
-    m_Position: {x: 430, y: 420, z: 0}
+    m_Position: {x: 310, y: 280, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -277,37 +277,37 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: MoveRight
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Jump
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Attack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsMoving
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ChangeWeapon
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -476,8 +476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef6ad3a2f20757a4c8a8902b13c9669f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitStart: 0.1
-  _hitEnd: 0.8
+  _hitStart: 0.4
+  _hitEnd: 0.7
 --- !u!1102 &3072681162349630839
 AnimatorState:
   serializedVersion: 6

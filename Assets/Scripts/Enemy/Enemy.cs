@@ -38,5 +38,4 @@ public class Enemy : MonoBehaviour
     {
         Dead?.Invoke(this);
     }
-
 }

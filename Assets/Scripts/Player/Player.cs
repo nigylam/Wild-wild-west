@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(PlayerMover))]
@@ -44,6 +43,7 @@ public class Player : MonoBehaviour
         _attacker.Attack += _animator.OnAttack;
         _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
         _attacker.FireWeaponChosen += _animator.OnFireWeaponChosen;
+        _mover.Jumped += _animator.OnJump;
     }
 
     private void Start()
@@ -54,6 +54,10 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         _health.Dead -= OnDead;
+        _attacker.Attack -= _animator.OnAttack;
+        _attacker.MeleeWeaponChosen -= _animator.OnMeleeWeaponChosen;
+        _attacker.FireWeaponChosen -= _animator.OnFireWeaponChosen;
+        _mover.Jumped -= _animator.OnJump;
     }
 
     public void Restart()

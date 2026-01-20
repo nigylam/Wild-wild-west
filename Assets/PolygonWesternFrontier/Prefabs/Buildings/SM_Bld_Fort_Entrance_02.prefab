@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567075268953910}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 33637021440622260}
   - component: {fileID: 23855464243927384}
   - component: {fileID: 884146670705112756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Bld_Fort_Entrance_02_Walkway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,13 +217,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726474221071406}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.03899355, z: -0, w: 0.99923944}
   m_LocalPosition: {x: -1.4001412, y: 0.031703327, z: 0.008296967}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4271561518244670}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 4.469, z: 0}
 --- !u!33 &33738125646272094
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -300,13 +300,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842158458429624}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.048787896, z: -0, w: 0.99880916}
   m_LocalPosition: {x: 1.3955818, y: 0.031703327, z: 0.0041725156}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4271561518244670}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -5.593, z: 0}
 --- !u!33 &33608435966963010
 MeshFilter:
   m_ObjectHideFlags: 0

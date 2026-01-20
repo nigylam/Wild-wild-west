@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,10 +12,12 @@ public class PlayerMover : MonoBehaviour
     private Rigidbody _rigidbody;
     private Vector3 _forceDirection;
     private float _groundCheckOffset = 0.25f;
-    private float _groundCheckHeight = 1.5f;
+    private float _groundCheckHeight = 1f;
     private float _movementForce;
     private float _jumpForce;
     private float _maxSpeed;
+
+    public event Action Jumped;
 
     private void Awake()
     {
@@ -83,12 +86,13 @@ public class PlayerMover : MonoBehaviour
             _rigidbody.velocity = horizontalVelocity.normalized * _maxSpeed + Vector3.up * _rigidbody.velocity.y;
     }
 
-
-
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (IsGrounded())
-            _forceDirection += Vector3.up * _jumpForce;
+        if (IsGrounded() == false)
+            return;
+
+        _forceDirection += Vector3.up * _jumpForce;
+        Jumped?.Invoke();
     }
 
     private bool IsGrounded()

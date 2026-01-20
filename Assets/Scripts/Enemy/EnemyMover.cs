@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private float _attackRange;
-    [SerializeField] private MeleeWeapon _weapon;
+    //[SerializeField] private MeleeWeapon _weapon;
     [SerializeField] private LayerMask _bridgeLayer;
 
     private Transform _target;
@@ -22,7 +22,7 @@ public class EnemyMover : MonoBehaviour
     private float _angleAttackOffset = 0.001f;
     private float _jumpForce = 2f;
     private float _groundCheckOffset = 0.25f;
-    private float _groundCheckHeight = 1.5f;
+    private float _groundCheckHeight = 0.5f;
 
     private void Update()
     {
@@ -75,6 +75,14 @@ public class EnemyMover : MonoBehaviour
         if (_jump != null)
             StopCoroutine(_jump);
 
+        delay = _jumpDelay;
+
+        while (delay > 0f)
+        {
+            delay -= Time.deltaTime;
+            yield return null;
+        }
+
         while (IsGrounded() == false || IsOnBridge())
             yield return null;
 
@@ -116,7 +124,7 @@ public class EnemyMover : MonoBehaviour
         {
             _agent.isStopped = true;
             RotateTowardsTarget();
-            _weapon.TryAttack();
+            //_weapon.TryAttack();
         }
         else
         {

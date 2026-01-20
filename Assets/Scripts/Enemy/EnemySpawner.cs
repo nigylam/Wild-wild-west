@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnZonePositionOffset = 0.5f;
     private WaitForSeconds _spawnWait;
     private Coroutine _spawnCoroutine;
+    private Transform _lastSpawnPoint;
 
     public event Action EnemyKilled;
 
@@ -39,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
     {
         float spawnRate = roundLength / enemiesCount;
 
-        if(_spawnCoroutine != null)
+        if (_spawnCoroutine != null)
             StopCoroutine(_spawnCoroutine);
 
         _spawnCoroutine = StartCoroutine(RepeatingSpawn(spawnRate, enemiesCount, bossesCount, startSpawnDelay));
@@ -75,29 +76,20 @@ public class EnemySpawner : MonoBehaviour
 
     private void Spawn(EnemyType enemyType)
     {
-        Transform spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
+        List<Transform> spawnPoints = new List<Transform>();
+        spawnPoints.AddRange(_spawnPoints);
+
+        if (_lastSpawnPoint != null)
+            spawnPoints.Remove(_lastSpawnPoint);
+
+        Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
 
         if (enemyType == EnemyType.Enemy)
             _enemyPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
         else
             _bossPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
 
-        Vector3 position = new
-            (
-                UnityEngine.Random.Range
-                (
-                    spawnPoint.position.x - _spawnZonePositionOffset,
-                    spawnPoint.position.x + _spawnZonePositionOffset
-                ),
-
-                spawnPoint.position.y,
-
-                UnityEngine.Random.Range
-                (
-                    spawnPoint.position.z - _spawnZonePositionOffset,
-                    spawnPoint.position.z + _spawnZonePositionOffset
-                )
-             );
+        _lastSpawnPoint = spawnPoint;
     }
 
     private void OnEnemyKilled() => EnemyKilled?.Invoke();
