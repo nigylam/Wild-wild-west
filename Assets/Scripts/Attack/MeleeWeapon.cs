@@ -2,16 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(Collider))]
 public class MeleeWeapon : Weapon
 {
-    private readonly int AttackTrigger = Animator.StringToHash("Attack");
-
     [SerializeField] private MeleeWeaponAnimationEventSender _eventSender;
-    [SerializeField] private Animator _animator;
     [SerializeField] private LayerMask _attackTargets;
+    [SerializeField] private Collider _collider;
 
-    private BoxCollider _collider;
     private HashSet<Hitbox> _hitThisSwing = new();
 
     public event Action AttackStarted;
@@ -20,7 +16,6 @@ public class MeleeWeapon : Weapon
     protected override void Awake()
     {
         base.Awake();
-        _collider = GetComponent<BoxCollider>();
         _collider.enabled = false;
     }
 
@@ -60,15 +55,6 @@ public class MeleeWeapon : Weapon
             _hitThisSwing.Add(hitbox);
             hitbox.ApplyDamage(Damage, default);
         }
-    }
-
-    protected override void Attack()
-    {
-        if (CanAttack == false)
-            return;
-
-        base.Attack();
-        _animator.SetTrigger(AttackTrigger);
     }
 
     private void EnableDamage()

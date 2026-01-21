@@ -18,12 +18,24 @@ public class PlayerAnimator : MonoBehaviour
 
     private ThirdPersonActions _actions;
     private InputAction _moveAction;
+    private bool _isMoving;
 
     private void Update()
     {
         _animator.SetFloat(AnimatorMoveForward, _moveAction.ReadValue<Vector2>().y);
         _animator.SetFloat(AnimatorMoveRight, _moveAction.ReadValue<Vector2>().x);
-        _animator.SetBool(AnimatorIsMoving, _moveAction.ReadValue<Vector2>() != new Vector2(0, 0));
+        SetMovingBool();
+    }
+
+    private void SetMovingBool()
+    {
+        bool isMoving = _moveAction.ReadValue<Vector2>() != Vector2.zero;
+
+        if (_isMoving == isMoving)
+            return;
+
+        _isMoving = isMoving;
+        _animator.SetBool(AnimatorIsMoving, _isMoving);
     }
 
     public void Initialize(ThirdPersonActions actions)

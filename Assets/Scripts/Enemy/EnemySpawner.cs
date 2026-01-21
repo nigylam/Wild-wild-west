@@ -12,7 +12,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private EnemyPool _bossPool;
 
     private float _waitStep = 0.1f;
-    private float _spawnZonePositionOffset = 0.5f;
     private WaitForSeconds _spawnWait;
     private Coroutine _spawnCoroutine;
     private Transform _lastSpawnPoint;

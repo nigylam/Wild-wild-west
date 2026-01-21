@@ -1,13 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private float _attackRange;
-    //[SerializeField] private MeleeWeapon _weapon;
+    [SerializeField] private MeleeWeapon _weapon;
     [SerializeField] private LayerMask _bridgeLayer;
 
     private Transform _target;
@@ -23,6 +23,12 @@ public class EnemyMover : MonoBehaviour
     private float _jumpForce = 2f;
     private float _groundCheckOffset = 0.25f;
     private float _groundCheckHeight = 0.5f;
+    private bool _isStopSend;
+    private bool _isStartMovingSent;
+
+    public event Action Attack;
+    public event Action Stop;
+    public event Action StartMoving;
 
     private void Update()
     {
@@ -32,19 +38,26 @@ public class EnemyMover : MonoBehaviour
         MoveNavmesh();
     }
 
-    public void Initialize(Transform target)
+    public void Initialize(NavMeshAgent agent, Transform target)
     {
-        _agent = GetComponent<NavMeshAgent>();
         _rigidbody = GetComponent<Rigidbody>();
+        _agent = agent;
         _agent.enabled = false;
         _agent.radius *= transform.lossyScale.x;
         _agent.height *= transform.lossyScale.y;
         _target = target;
+        _isStopSend = false;
+        _isStartMovingSent = false;
 
         if (_jump != null)
             StopCoroutine(_jump);
 
         StartCoroutine(Jump());
+    }
+
+    public void Disable()
+    {
+        _agent.enabled = false;
     }
 
     private void RotateTowardsTarget()
@@ -92,9 +105,9 @@ public class EnemyMover : MonoBehaviour
 
     private bool IsGrounded()
     {
-        Ray ray = new Ray(transform.position + Vector3.up * _groundCheckOffset, Vector3.down);
+        Ray ray = new(transform.position + Vector3.up * _groundCheckOffset, Vector3.down);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, _groundCheckHeight))
+        if (Physics.Raycast(ray, _groundCheckHeight))
             return true;
 
         return false;
@@ -102,7 +115,7 @@ public class EnemyMover : MonoBehaviour
 
     private bool IsOnBridge()
     {
-        Ray ray = new Ray(transform.position + Vector3.up * _groundCheckOffset, Vector3.down);
+        Ray ray = new(transform.position + Vector3.up * _groundCheckOffset, Vector3.down);
 
         if (Physics.Raycast(ray, _groundCheckHeight, _bridgeLayer))
             return true;
@@ -122,12 +135,28 @@ public class EnemyMover : MonoBehaviour
 
         if (sqrDistance <= _attackRange * _attackRange)
         {
+            if (_isStopSend == false)
+            {
+                Stop?.Invoke();
+                _isStopSend = true;
+            }
+
+            _isStartMovingSent = false;
             _agent.isStopped = true;
             RotateTowardsTarget();
-            //_weapon.TryAttack();
+
+            if (_weapon.TryAttack())
+                Attack?.Invoke();
         }
         else
         {
+            if (_isStartMovingSent == false)
+            {
+                StartMoving?.Invoke();
+                _isStartMovingSent = true;
+            }
+
+            _isStopSend = false;
             _agent.isStopped = false;
             _agent.SetDestination(_target.position);
         }

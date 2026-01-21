@@ -9,6 +9,7 @@ public class Health : MonoBehaviour, IDamageable, ICountable
 
     public event Action Dead;
     public event Action Changed;
+    public event Action<Vector3> Hited;
 
     public float Max => _maxHealth;
 
@@ -30,15 +31,15 @@ public class Health : MonoBehaviour, IDamageable, ICountable
     public void TakeDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         Current -= damage;
-        Changed?.Invoke();
 
         if (Current <= 0)
             Dead?.Invoke();
+        else
+            Hited?.Invoke(hitPoint);
     }
 
     public void Restart()
     {
         Current = _maxHealth;
-        Changed?.Invoke();
     }
 }
