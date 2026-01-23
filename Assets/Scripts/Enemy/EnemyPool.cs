@@ -27,11 +27,11 @@ public class EnemyPool : MonoBehaviour
         );
     }
 
-    public Enemy Spawn(Vector3 position, Transform target, Quaternion rotation)
+    public Enemy Spawn(Vector3 position, Transform target, Quaternion rotation, EffectSpawner hitEffectSpawner)
     {
         Enemy enemy = _pool.Get();
         enemy.Dead += OnEnemyDead;
-        enemy.Initialize(target, transform, position, rotation);
+        enemy.Initialize(target, transform, position, rotation, hitEffectSpawner);
         TryAddToActiveList(enemy);
         return enemy;
     }

@@ -7,6 +7,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyAnimator))]
 public class Enemy : MonoBehaviour
 {
+    private EffectSpawner _hitEffectSpawner;
     private Health _health;
     private EnemyMover _mover;
     private EnemyAnimator _animator;
@@ -14,13 +15,14 @@ public class Enemy : MonoBehaviour
 
     public event Action<Enemy> Dead;
 
-    public void Initialize(Transform target, Transform parrent, Vector3 position, Quaternion rotation)
+    public void Initialize(Transform target, Transform parrent, Vector3 position, Quaternion rotation, EffectSpawner hitEffectSpawner)
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<EnemyAnimator>();
         _health = GetComponent<Health>();
         _mover = GetComponent<EnemyMover>();
         _mover.Initialize(_agent, target);
+        _hitEffectSpawner = hitEffectSpawner;
         transform.SetParent(parrent);
         transform.position = position;
         transform.rotation = rotation;
@@ -43,9 +45,10 @@ public class Enemy : MonoBehaviour
         _mover.Disable();
     }
 
-    private void OnHit(Vector3 hitPoint)
+    private void OnHit(Vector3 hitPoint, Vector3 hitNormal)
     {
         _animator.OnHit();
+        _hitEffectSpawner.Spawn(hitPoint, Quaternion.LookRotation(hitNormal), transform.parent);
     }
 
     private void OnDeathAnimationEnded()

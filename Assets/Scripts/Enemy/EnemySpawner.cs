@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private EnemyPool _enemyPool;
     [SerializeField] private EnemyPool _bossPool;
+    [SerializeField] private EffectSpawner _hitEffectSpawner;
 
     private float _waitStep = 0.1f;
     private WaitForSeconds _spawnWait;
@@ -84,9 +85,9 @@ public class EnemySpawner : MonoBehaviour
         Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
 
         if (enemyType == EnemyType.Enemy)
-            _enemyPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
+            _enemyPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation, _hitEffectSpawner);
         else
-            _bossPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation);
+            _bossPool.Spawn(spawnPoint.position, _target, spawnPoint.rotation, _hitEffectSpawner);
 
         _lastSpawnPoint = spawnPoint;
     }

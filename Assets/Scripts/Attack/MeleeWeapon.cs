@@ -53,7 +53,11 @@ public class MeleeWeapon : Weapon
                 return;
 
             _hitThisSwing.Add(hitbox);
-            hitbox.ApplyDamage(Damage, default);
+
+            Vector3 hitPoint = other.ClosestPoint(_collider.transform.position);
+            Vector3 hitNormal = (hitPoint - other.bounds.center).normalized;
+
+            hitbox.ApplyDamage(Damage, hitPoint, hitNormal);
         }
     }
 

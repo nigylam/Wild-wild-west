@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -16,7 +15,6 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Rig _rig;
 
-    private ThirdPersonActions _actions;
     private InputAction _moveAction;
     private bool _isMoving;
 
@@ -40,8 +38,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void Initialize(ThirdPersonActions actions)
     {
-        _actions = actions;
-        _moveAction = _actions.Player.Move;
+        _moveAction = actions.Player.Move;
     }
 
     public void OnAttack()

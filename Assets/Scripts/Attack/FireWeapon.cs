@@ -4,9 +4,10 @@ using UnityEngine;
 public class FireWeapon : Weapon
 {
     [SerializeField] private Transform _muzzle;
-    [SerializeField] private ParticleSystem _shotPrefab;
+    [SerializeField] private ParticleSystem _shotEffect;
     [SerializeField] private AudioClip _reloadSound;
-
+    [SerializeField] private EffectSpawner _environmentHitEffectSpawner;
+    
     private Camera _camera;
     private Coroutine _playReloadAfterShot;
     private float _maxShootDistance = 100f;
@@ -33,22 +34,17 @@ public class FireWeapon : Weapon
 
         Vector2 screenCenter = new Vector2(0.5f, 0.5f);
         Ray ray = _camera.ViewportPointToRay(screenCenter);
-        Vector3 targetPoint;
 
         if (Physics.Raycast(ray, out RaycastHit hit, _maxShootDistance))
         {
-            targetPoint = hit.point;
-
             if (hit.collider.TryGetComponent(out Hitbox hitbox))
-                hitbox.ApplyDamage(Damage, hit);
-        }
-        else
-        {
-            targetPoint = ray.origin + ray.direction * _maxShootDistance;
+                hitbox.ApplyDamage(Damage, hit.point, hit.normal);
+            else
+                _environmentHitEffectSpawner.Spawn(hit.point, Quaternion.LookRotation(hit.normal), transform);
         }
 
-        Vector3 direction = (targetPoint - _muzzle.position).normalized;
-        Instantiate(_shotPrefab, _muzzle.position, Quaternion.LookRotation(direction));
+        _shotEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _shotEffect.Play();
     }
 
     protected override void PlaySound()
