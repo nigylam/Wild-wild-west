@@ -65,6 +65,7 @@ public class Player : MonoBehaviour
         _mover.enabled = true;
         _cameraRotator.enabled = true;
         _health.Restart();
+        _healthBar.Initialize(_health);
         transform.position = _startPosition;
     }
 
