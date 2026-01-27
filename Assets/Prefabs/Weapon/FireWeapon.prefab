@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 1478447242468180461}
   - component: {fileID: 6331103346516385138}
   - component: {fileID: -4738467409290092390}
+  - component: {fileID: 7890432321053761889}
   m_Layer: 0
   m_Name: FireWeapon
   m_TagString: Untagged
@@ -330,7 +331,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -429,10 +430,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 35
   _cooldownTime: 1
-  _attackSound: {fileID: 8300000, guid: 9d8c550214f49374a9a1c5e7fe72963c, type: 3}
   _muzzle: {fileID: 8903468441185754499}
   _shotEffect: {fileID: 5554161542898570920, guid: e0ef1831c7fb00843a15c24419fb9f94, type: 3}
-  _reloadSound: {fileID: 8300000, guid: 7ab8e68d144ec1949871de23acc349c1, type: 3}
   _environmentHitEffectSpawner: {fileID: -4738467409290092390}
 --- !u!114 &-4738467409290092390
 MonoBehaviour:
@@ -447,6 +446,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _effectPrefab: {fileID: 6848148498730364148, guid: 5cdf704c7fa2bf54bb7a3ec649d28a7d, type: 3}
+--- !u!114 &7890432321053761889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6384226497112073172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20376f43afdd9da48b9ba0db7f341289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackSound: {fileID: 8300000, guid: 9d8c550214f49374a9a1c5e7fe72963c, type: 3}
+  _pitchOffset: 0.1
+  _reloadSound: {fileID: 8300000, guid: 7ab8e68d144ec1949871de23acc349c1, type: 3}
 --- !u!1001 &2737277773651274978
 PrefabInstance:
   m_ObjectHideFlags: 0

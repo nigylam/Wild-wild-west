@@ -18,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
     private Transform _lastSpawnPoint;
 
     public event Action EnemyKilled;
+    public event Action RoundStarted;
 
     private void Awake()
     {
@@ -59,6 +60,8 @@ public class EnemySpawner : MonoBehaviour
 
         for (int c = 0; c < startSpawnNumberIterations; c++)
             yield return _spawnWait;
+
+        RoundStarted?.Invoke();
 
         for (int i = 0; i < enemiesCount; i++)
         {

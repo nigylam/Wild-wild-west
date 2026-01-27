@@ -17,6 +17,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private InputAction _moveAction;
     private bool _isMoving;
+    private bool _canWalk = true;
 
     private void Update()
     {
@@ -28,6 +29,9 @@ public class PlayerAnimator : MonoBehaviour
     private void SetMovingBool()
     {
         bool isMoving = _moveAction.ReadValue<Vector2>() != Vector2.zero;
+
+        if(_canWalk == false)
+            isMoving = false;
 
         if (_isMoving == isMoving)
             return;
@@ -61,5 +65,11 @@ public class PlayerAnimator : MonoBehaviour
     public void OnJump()
     {
         _animator.SetTrigger(AnimatorJump);
+        _canWalk = false;
+    }
+
+    public void OnLanded()
+    {
+        _canWalk = true;
     }
 }

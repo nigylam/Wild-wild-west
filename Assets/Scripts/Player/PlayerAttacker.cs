@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +7,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private FireWeapon _fireWeapon;
     [SerializeField] private MeleeWeapon _meleeWeapon;
     [SerializeField] private MeleeWeaponAnimationEventSender _meleeWeaponAnimationEventSender;
+    [SerializeField] private MeleeWeaponSound _meleeWeaponSound;
 
     private Weapon _activeWeapon;
     private ThirdPersonActions _actions;
@@ -23,22 +21,17 @@ public class PlayerAttacker : MonoBehaviour
     {
         _meleeWeapon.AttackStarted += OnMeleeAttackStarted;
         _meleeWeapon.AttackEnded += OnMeleeAttackEnded;
+        _meleeWeapon.AttackCulmination += _meleeWeaponSound.PlayAttackSound;
+        _meleeWeapon.DamageDid += _meleeWeaponSound.PlayDamageSound;
     }
 
-    private void OnMeleeAttackStarted()
-    {
-        _canSwitchWeapon = false;
-    }
-
-    private void OnMeleeAttackEnded()
-    {
-        _canSwitchWeapon = true;
-    }
 
     private void OnDisable()
     {
         _actions.Player.Attack.started -= OnAttack;
         _actions.Player.Changeweapon.started -= OnChangeWeapon;
+        _meleeWeapon.AttackCulmination -= _meleeWeaponSound.PlayAttackSound;
+        _meleeWeapon.DamageDid -= _meleeWeaponSound.PlayDamageSound;
     }
 
     public void Initialize(ThirdPersonActions actions, Camera camera)
@@ -55,6 +48,16 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (_activeWeapon.TryAttack())
             Attack?.Invoke();
+    }
+
+    private void OnMeleeAttackStarted()
+    {
+        _canSwitchWeapon = false;
+    }
+
+    private void OnMeleeAttackEnded()
+    {
+        _canSwitchWeapon = true;
     }
 
     private void OnChangeWeapon(InputAction.CallbackContext context)

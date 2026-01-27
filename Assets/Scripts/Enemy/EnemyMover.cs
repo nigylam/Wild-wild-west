@@ -25,10 +25,12 @@ public class EnemyMover : MonoBehaviour
     private float _groundCheckHeight = 0.5f;
     private bool _isStopSend;
     private bool _isStartMovingSent;
+    private bool _wasGrounded;
 
     public event Action Attack;
     public event Action Stop;
     public event Action StartMoving;
+    public event Action Landed;
 
     private void Update()
     {
@@ -36,6 +38,17 @@ public class EnemyMover : MonoBehaviour
             return;
 
         MoveNavmesh();
+    }
+
+    private void FixedUpdate()
+    {
+
+        if (_wasGrounded == false && IsGrounded())
+        {
+            Landed?.Invoke();
+        }
+
+        _wasGrounded = IsGrounded();
     }
 
     public void Initialize(NavMeshAgent agent, Transform target)

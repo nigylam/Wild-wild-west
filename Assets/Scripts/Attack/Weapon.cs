@@ -5,30 +5,19 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected float Damage;
-
     [SerializeField] private float _cooldownTime;
-    [SerializeField] private AudioClip _attackSound;
-
-    protected AudioSource AudioSource;
-    protected bool CanAttack = true;
 
     private Coroutine _cooldown;
-
-    protected virtual void Awake()
-    {
-        AudioSource = GetComponent<AudioSource>();
-    }
+    protected bool CanAttack = true;
 
     protected virtual void OnEnable()
     {
         CanAttack = true;
-        AudioSource.Stop();
     }
 
     protected virtual void OnDisable()
     {
         CanAttack = true;
-        AudioSource.Stop();
 
         if (_cooldown != null)
             StopCoroutine(_cooldown);
@@ -48,13 +37,6 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Attack()
     {
         StartCooldown();
-        PlaySound();
-    }
-
-    protected virtual void PlaySound()
-    {
-        AudioSource.clip = _attackSound;
-        AudioSource.Play();
     }
 
     private void StartCooldown()

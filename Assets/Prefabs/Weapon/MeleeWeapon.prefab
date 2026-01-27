@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6773094151748303391}
   - component: {fileID: 8141387563975433986}
-  - component: {fileID: 282060324301476181}
   - component: {fileID: 3553368113289961823}
+  - component: {fileID: 282060324301476181}
+  - component: {fileID: 506833527600070501}
   m_Layer: 0
   m_Name: MeleeWeapon
   m_TagString: Untagged
@@ -56,26 +57,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &282060324301476181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2779611778249365670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f971e7ac4c94c45803d8c9172e76eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 55
-  _cooldownTime: 1
-  _attackSound: {fileID: 0}
-  _eventSender: {fileID: 0}
-  _animator: {fileID: 0}
-  _attackTargets:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!82 &3553368113289961823
 AudioSource:
   m_ObjectHideFlags: 0
@@ -87,7 +68,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -172,6 +153,40 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &282060324301476181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2779611778249365670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f971e7ac4c94c45803d8c9172e76eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 55
+  _cooldownTime: 1
+  _eventSender: {fileID: 0}
+  _attackTargets:
+    serializedVersion: 2
+    m_Bits: 0
+  _collider: {fileID: 0}
+--- !u!114 &506833527600070501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2779611778249365670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc23d43afb05e44ea7fb7529696d4dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackSound: {fileID: 8300000, guid: ee755b53f763c6f41b5f437b41344399, type: 3}
+  _pitchOffset: 0.1
+  _damageSound: {fileID: 8300000, guid: f54615f1929fc6b4b858026d3e282378, type: 3}
 --- !u!1001 &8257170024219178672
 PrefabInstance:
   m_ObjectHideFlags: 0

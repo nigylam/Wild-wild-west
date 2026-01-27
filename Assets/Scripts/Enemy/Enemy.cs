@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,10 +8,13 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyAnimator))]
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private StepSound _stepSound;
+
     private EffectSpawner _hitEffectSpawner;
     private Health _health;
     private EnemyMover _mover;
     private EnemyAnimator _animator;
+    private EnemySound _sound;
     private NavMeshAgent _agent;
 
     public event Action<Enemy> Dead;
@@ -21,6 +25,7 @@ public class Enemy : MonoBehaviour
         _animator = GetComponent<EnemyAnimator>();
         _health = GetComponent<Health>();
         _mover = GetComponent<EnemyMover>();
+        _sound = GetComponent<EnemySound>();
         _mover.Initialize(_agent, target);
         _hitEffectSpawner = hitEffectSpawner;
         transform.SetParent(parrent);
@@ -28,6 +33,8 @@ public class Enemy : MonoBehaviour
         transform.rotation = rotation;
         _health.Dead += OnDead;
         _mover.Attack += _animator.OnAttack;
+        _mover.Attack += _sound.OnAttack;
+        _mover.Landed += _stepSound.OnLanded;
         _health.Hited += OnHit;
         _mover.Stop += _animator.OnStop;
         _mover.StartMoving += _animator.OnStartMoving;        
@@ -39,6 +46,8 @@ public class Enemy : MonoBehaviour
         _animator.DeathAnimationEnded += OnDeathAnimationEnded;
         _health.Dead -= OnDead;
         _mover.Attack -= _animator.OnAttack;
+        _mover.Attack -= _sound.OnAttack;
+        _mover.Landed -= _stepSound.OnLanded;
         _health.Hited -= OnHit;
         _mover.Stop -= _animator.OnStop;
         _mover.StartMoving -= _animator.OnStartMoving;
@@ -48,6 +57,7 @@ public class Enemy : MonoBehaviour
     private void OnHit(Vector3 hitPoint, Vector3 hitNormal)
     {
         _animator.OnHit();
+        _sound.OnHit();
         _hitEffectSpawner.Spawn(hitPoint, Quaternion.LookRotation(hitNormal), transform.parent);
     }
 

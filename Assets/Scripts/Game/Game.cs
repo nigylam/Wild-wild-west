@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent (typeof(GameSound))]
 [RequireComponent(typeof(RoundCounter))]
 public class Game : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject _HUD;
     [SerializeField] private Bar _roundBar;
 
+    private GameSound _sound;
     private RoundCounter _roundCounter;
     private int _roundEnemiesCount;
     private float _roundLength;
@@ -26,6 +29,7 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
+        _sound = GetComponent<GameSound>();
         _roundCounter = GetComponent<RoundCounter>();
         _roundBar.Initialize(_roundCounter);
     }
@@ -33,6 +37,7 @@ public class Game : MonoBehaviour
     private void OnEnable()
     {
         _enemySpawner.EnemyKilled += OnEnemyKilled;
+        _enemySpawner.RoundStarted += _sound.PlayStartRound;
         _player.Dead += OnPlayerDead;
         _overlay.Restarted += Restart;
     }
@@ -45,6 +50,7 @@ public class Game : MonoBehaviour
     private void OnDisable()
     {
         _enemySpawner.EnemyKilled -= OnEnemyKilled;
+        _enemySpawner.RoundStarted -= _sound.PlayStartRound;
         _player.Dead -= OnPlayerDead;
         _overlay.Restarted -= Restart;
     }
@@ -74,9 +80,11 @@ public class Game : MonoBehaviour
         if (_roundCounter.Current >= _roundsCount)
         {
             End(true);
+            _sound.PlayWinGame();
             return;
         }
 
+        _sound.PlayEndRound();
         _roundCounter.Increase();
         _roundEnemiesCount += _roundEnemiesIncrement;
         _roundLength += _roundLengthIncrement;
@@ -87,6 +95,7 @@ public class Game : MonoBehaviour
     private void OnPlayerDead()
     {
         End(false);
+        _sound.PlayLoseGame();
     }
 
     public void End(bool isWin)
@@ -106,6 +115,7 @@ public class Game : MonoBehaviour
 
     private void Restart()
     {
+        _sound.Stop();
         _enemySpawner.Restart();
         StartGame();
         _player.Restart();

@@ -1,28 +1,26 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(FireWeaponSound))]
 public class FireWeapon : Weapon
 {
     [SerializeField] private Transform _muzzle;
     [SerializeField] private ParticleSystem _shotEffect;
-    [SerializeField] private AudioClip _reloadSound;
     [SerializeField] private EffectSpawner _environmentHitEffectSpawner;
-    
+
+    private FireWeaponSound _sound;
     private Camera _camera;
-    private Coroutine _playReloadAfterShot;
     private float _maxShootDistance = 100f;
 
     protected override void OnDisable()
     {
         base.OnDisable();
-
-        if (_playReloadAfterShot != null)
-            StopCoroutine(_playReloadAfterShot);
     }
 
     public void Initialize(Camera camera)
     {
         _camera = camera;
+        _sound = GetComponent<FireWeaponSound>();
     }
 
     protected override void Attack()
@@ -45,24 +43,6 @@ public class FireWeapon : Weapon
 
         _shotEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _shotEffect.Play();
-    }
-
-    protected override void PlaySound()
-    {
-        base.PlaySound();
-
-        if (_playReloadAfterShot != null)
-            StopCoroutine(_playReloadAfterShot);
-
-        _playReloadAfterShot = StartCoroutine(PlayReloadAfterShot());
-    }
-
-    private IEnumerator PlayReloadAfterShot()
-    {
-        while (AudioSource.isPlaying)
-            yield return null;
-
-        AudioSource.clip = _reloadSound;
-        AudioSource.Play();
+        _sound.PlayAttackSound();
     }
 }

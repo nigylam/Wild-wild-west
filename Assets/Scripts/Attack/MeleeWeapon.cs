@@ -12,10 +12,11 @@ public class MeleeWeapon : Weapon
 
     public event Action AttackStarted;
     public event Action AttackEnded;
+    public event Action AttackCulmination;
+    public event Action DamageDid;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         _collider.enabled = false;
     }
 
@@ -53,6 +54,7 @@ public class MeleeWeapon : Weapon
                 return;
 
             _hitThisSwing.Add(hitbox);
+            DamageDid?.Invoke();
 
             Vector3 hitPoint = other.ClosestPoint(_collider.transform.position);
             Vector3 hitNormal = (hitPoint - other.bounds.center).normalized;
@@ -65,6 +67,7 @@ public class MeleeWeapon : Weapon
     {
         _hitThisSwing.Clear();
         _collider.enabled = true;
+        AttackCulmination?.Invoke();
     }
 
     private void DisableDamage()

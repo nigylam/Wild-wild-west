@@ -14,10 +14,13 @@ public class PlayerMover : MonoBehaviour
     private float _groundCheckOffset = 0.25f;
     private float _groundCheckHeight = 1f;
     private float _movementForce;
+    private float _movementForceDecrease = 0.5f;
     private float _jumpForce;
     private float _maxSpeed;
+    private bool _wasGrounded = true;
 
     public event Action Jumped;
+    public event Action Landed;
 
     private void Awake()
     {
@@ -43,6 +46,13 @@ public class PlayerMover : MonoBehaviour
     {
         Move();
         RotateToCamera();
+
+        if (_wasGrounded == false && IsGrounded())
+        {
+            Landed?.Invoke();
+        }
+
+        _wasGrounded = IsGrounded();
     }
 
     public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
@@ -71,8 +81,11 @@ public class PlayerMover : MonoBehaviour
 
         Vector2 input = _moveAction.ReadValue<Vector2>();
         Vector3 moveDir = camForward * input.y + camRight * input.x;
-
         _forceDirection += moveDir * _movementForce;
+
+        if (input != new Vector2(0, 1))
+            _forceDirection *= _movementForceDecrease;
+
         _rigidbody.AddForce(_forceDirection, ForceMode.Impulse);
         _forceDirection = Vector3.zero;
 

@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     private Health _health;
     private PlayerAnimator _animator;
     private PlayerAttacker _attacker;
+    private StepSound _sound;
     private Vector3 _startPosition;
 
     public event Action Dead;
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
         _mover = GetComponent<PlayerMover>();
         _animator = GetComponent<PlayerAnimator>();
         _attacker = GetComponent<PlayerAttacker>();
+        _sound = GetComponent<StepSound>();
+
         _attacker.Initialize(_actions, _camera);
         _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
         _animator.Initialize(_actions);
@@ -44,6 +48,9 @@ public class Player : MonoBehaviour
         _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
         _attacker.FireWeaponChosen += _animator.OnFireWeaponChosen;
         _mover.Jumped += _animator.OnJump;
+        _mover.Jumped += _sound.OnJumpStarted;
+        _mover.Landed += _sound.OnLanded;
+        _mover.Landed += _animator.OnLanded;
     }
 
     private void Start()
@@ -58,6 +65,9 @@ public class Player : MonoBehaviour
         _attacker.MeleeWeaponChosen -= _animator.OnMeleeWeaponChosen;
         _attacker.FireWeaponChosen -= _animator.OnFireWeaponChosen;
         _mover.Jumped -= _animator.OnJump;
+        _mover.Jumped -= _sound.OnJumpStarted;
+        _mover.Landed -= _sound.OnLanded;
+        _mover.Landed -= _animator.OnLanded;
     }
 
     public void Restart()
