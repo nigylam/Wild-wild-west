@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(FireWeaponSound))]
@@ -12,6 +12,8 @@ public class FireWeapon : Weapon
     private Camera _camera;
     private float _maxShootDistance = 100f;
 
+    public event Action ShotEnded;
+
     protected override void OnDisable()
     {
         base.OnDisable();
@@ -21,6 +23,7 @@ public class FireWeapon : Weapon
     {
         _camera = camera;
         _sound = GetComponent<FireWeaponSound>();
+        _sound.ShotSoundPlayed += OnShotSoundPlayed;
     }
 
     protected override void Attack()
@@ -44,5 +47,10 @@ public class FireWeapon : Weapon
         _shotEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _shotEffect.Play();
         _sound.PlayAttackSound();
+    }
+    
+    private void OnShotSoundPlayed()
+    {
+        ShotEnded?.Invoke();
     }
 }

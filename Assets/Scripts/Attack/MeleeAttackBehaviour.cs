@@ -15,7 +15,6 @@ public class MeleeAttackBehaviour : StateMachineBehaviour
         Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _sender = animator.GetComponent<MeleeWeaponAnimationEventSender>();
-        _sender?.RaiseAttackStarted();
         _hitSent = false;
     }
 
@@ -34,11 +33,5 @@ public class MeleeAttackBehaviour : StateMachineBehaviour
         {
             _sender?.RaiseAttackHitDisable();
         }
-    }
-
-    public override void OnStateExit(
-        Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        _sender?.RaiseAttackEnded();
     }
 }

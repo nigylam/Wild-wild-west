@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public abstract class Weapon : MonoBehaviour
 
     private Coroutine _cooldown;
     protected bool CanAttack = true;
+
+    public event Action AttackStarted;
+    public event Action AttackEnded;
 
     protected virtual void OnEnable()
     {
@@ -36,6 +40,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Attack()
     {
+        AttackStarted?.Invoke();
         StartCooldown();
     }
 
@@ -46,10 +51,10 @@ public abstract class Weapon : MonoBehaviour
         if (_cooldown != null)
             StopCoroutine(_cooldown);
 
-        _cooldown = StartCoroutine(ShootCooldown());
+        _cooldown = StartCoroutine(AttackCooldown());
     }
 
-    private IEnumerator ShootCooldown()
+    private IEnumerator AttackCooldown()
     {
         float time = 0;
 
@@ -60,5 +65,6 @@ public abstract class Weapon : MonoBehaviour
         }
 
         CanAttack = true;
+        AttackEnded?.Invoke();
     }
 }

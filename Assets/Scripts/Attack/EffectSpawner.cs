@@ -37,10 +37,11 @@ public class EffectSpawner : MonoBehaviour
     private void OnDisable()
     {
         StopAllCoroutines();
-
+            
         while (_activeElements.Count > 0)
         {
             _pool.Release(_activeElements[0]);
+            _activeElements.RemoveAt(0);
         }
 
         _activeElements.Clear();
@@ -60,8 +61,8 @@ public class EffectSpawner : MonoBehaviour
 
     private IEnumerator ReleaseWhenFinished(ParticleSystem particleSystem)
     {
-        while(particleSystem.IsAlive(true))
-           yield return null;
+        while (particleSystem.IsAlive(true))
+            yield return null;
 
         TryRemoveFromActiveList(particleSystem);
         _pool.Release(particleSystem);

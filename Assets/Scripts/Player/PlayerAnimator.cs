@@ -9,7 +9,7 @@ public class PlayerAnimator : MonoBehaviour
     private readonly int AnimatorIsMoving = Animator.StringToHash("IsMoving");
     private readonly int AnimatorFire = Animator.StringToHash("Attack");
     private readonly int AnimatorJump = Animator.StringToHash("Jump");
-    private readonly int AnimatorChangeWeapon = Animator.StringToHash("ChangeWeapon");
+    private readonly int AnimatorActiveWeaponType = Animator.StringToHash("ActiveWeaponType");
     private readonly float RigMaxWeight = 1;
 
     [SerializeField] private Animator _animator;
@@ -18,6 +18,14 @@ public class PlayerAnimator : MonoBehaviour
     private InputAction _moveAction;
     private bool _isMoving;
     private bool _canWalk = true;
+    private int _gunLayer;
+    private int _meleeLayer;
+
+    void Awake()
+    {
+        _gunLayer = _animator.GetLayerIndex("UpperBody_Gun");
+        _meleeLayer = _animator.GetLayerIndex("UpperBody_Melee");
+    }
 
     private void Update()
     {
@@ -52,13 +60,17 @@ public class PlayerAnimator : MonoBehaviour
 
     public void OnMeleeWeaponChosen()
     {
-        _animator.SetTrigger(AnimatorChangeWeapon);
+        _animator.SetLayerWeight(_gunLayer, 0);
+        _animator.SetLayerWeight(_meleeLayer, 1);
+        _animator.SetInteger(AnimatorActiveWeaponType, (int)WeaponType.Sword);
         _rig.weight = 0;
     }
 
     public void OnFireWeaponChosen()
     {
-        _animator.SetTrigger(AnimatorChangeWeapon);
+        _animator.SetLayerWeight(_gunLayer, 1);
+        _animator.SetLayerWeight(_meleeLayer, 0);
+        _animator.SetInteger(AnimatorActiveWeaponType, (int)WeaponType.Gun);
         _rig.weight = RigMaxWeight;
     }
 

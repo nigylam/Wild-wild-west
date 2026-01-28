@@ -19,10 +19,12 @@ public class PlayerAttacker : MonoBehaviour
 
     private void OnEnable()
     {
-        _meleeWeapon.AttackStarted += OnMeleeAttackStarted;
-        _meleeWeapon.AttackEnded += OnMeleeAttackEnded;
+        _meleeWeapon.AttackStarted += OnAttackStarted;
+        _meleeWeapon.AttackEnded += OnAttackEnded;
         _meleeWeapon.AttackCulmination += _meleeWeaponSound.PlayAttackSound;
         _meleeWeapon.DamageDid += _meleeWeaponSound.PlayDamageSound;
+        _fireWeapon.AttackStarted += OnAttackStarted;
+        _fireWeapon.ShotEnded += OnAttackEnded;
     }
 
 
@@ -31,7 +33,9 @@ public class PlayerAttacker : MonoBehaviour
         _actions.Player.Attack.started -= OnAttack;
         _actions.Player.Changeweapon.started -= OnChangeWeapon;
         _meleeWeapon.AttackCulmination -= _meleeWeaponSound.PlayAttackSound;
-        _meleeWeapon.DamageDid -= _meleeWeaponSound.PlayDamageSound;
+        _meleeWeapon.DamageDid -= _meleeWeaponSound.PlayDamageSound; 
+        _fireWeapon.AttackStarted -= OnAttackStarted;
+        _fireWeapon.ShotEnded -= OnAttackEnded;
     }
 
     public void Initialize(ThirdPersonActions actions, Camera camera)
@@ -50,12 +54,12 @@ public class PlayerAttacker : MonoBehaviour
             Attack?.Invoke();
     }
 
-    private void OnMeleeAttackStarted()
+    private void OnAttackStarted()
     {
         _canSwitchWeapon = false;
     }
 
-    private void OnMeleeAttackEnded()
+    private void OnAttackEnded()
     {
         _canSwitchWeapon = true;
     }

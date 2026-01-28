@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FireWeaponSound : WeaponSound
@@ -7,6 +7,8 @@ public class FireWeaponSound : WeaponSound
     [SerializeField] private AudioClip _reloadSound;
 
     private Coroutine _playReloadAfterShot;
+
+    public event Action ShotSoundPlayed;
 
     private void OnDisable()
     {
@@ -29,6 +31,7 @@ public class FireWeaponSound : WeaponSound
         while (AudioSource.isPlaying)
             yield return null;
 
+        ShotSoundPlayed?.Invoke();
         PlaySound(_reloadSound);
     }
 }

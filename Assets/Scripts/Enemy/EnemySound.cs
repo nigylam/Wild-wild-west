@@ -13,10 +13,10 @@ public class EnemySound : MonoBehaviour
     [SerializeField] private float _idleSoundDelayMin;
     [SerializeField] private float _idleSoundDelayMax;
 
+    private float _pitch;
     private AudioSource _audioSource;
     private Coroutine _playIdleSoundsCoroutine;
     private Coroutine _startPlayIdleSoundsCoroutine;
-    private float _pitch;
 
     private void Awake()
     {

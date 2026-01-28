@@ -10,8 +10,6 @@ public class MeleeWeapon : Weapon
 
     private HashSet<Hitbox> _hitThisSwing = new();
 
-    public event Action AttackStarted;
-    public event Action AttackEnded;
     public event Action AttackCulmination;
     public event Action DamageDid;
 
@@ -26,8 +24,6 @@ public class MeleeWeapon : Weapon
 
         _eventSender.AttackHitEnable += EnableDamage;
         _eventSender.AttackHitDisable += DisableDamage;
-        _eventSender.AttackStarted += OnAttackStarted;
-        _eventSender.AttackEnded += OnAttackEnded;
     }
 
     protected override void OnDisable()
@@ -36,8 +32,6 @@ public class MeleeWeapon : Weapon
 
         _eventSender.AttackHitEnable -= EnableDamage;
         _eventSender.AttackHitDisable -= DisableDamage;
-        _eventSender.AttackStarted -= OnAttackStarted;
-        _eventSender.AttackEnded -= OnAttackEnded;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -73,16 +67,6 @@ public class MeleeWeapon : Weapon
     private void DisableDamage()
     {
         _collider.enabled = false;
-    }
-
-    private void OnAttackStarted()
-    {
-        AttackStarted?.Invoke();
-    }
-
-    private void OnAttackEnded()
-    {
-        AttackEnded?.Invoke();
     }
 
     private bool IsInLayerMask(GameObject obj, LayerMask mask)
