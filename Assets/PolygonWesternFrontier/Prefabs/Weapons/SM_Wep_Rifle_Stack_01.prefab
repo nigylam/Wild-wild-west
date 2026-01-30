@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33061231073940196}
   - component: {fileID: 23735173237610028}
   - component: {fileID: 7621446861207764690}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SM_Wep_Rifle_Stack_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

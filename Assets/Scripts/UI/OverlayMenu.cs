@@ -1,69 +1,99 @@
 using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class OverlayMenu : MonoBehaviour
 {
+    private const string StartText = "Wild wild west";
+    private const string PauseText = "Pause";
     private const string LoseEndText = "Potracheno";
     private const string WinEndText = "Respect +";
+    private const string StartButtonText = "Start";
+    private const string RestartButtonText = "Again";
 
-    [SerializeField] private Button _restartButton;
+    [SerializeField] private UIButton _restartButton;
+    [SerializeField] private UIButton _continueButton;
     [SerializeField] private TextMeshProUGUI _endText;
 
-    private UIButtonSound _sound;
-    private Coroutine _waitSound;
+    private PauseActions _pauseActions;
 
     public event Action Restarted;
+    public event Action Continued;
 
-    private void Awake()
+    public void Initialize(PauseActions actions)
     {
-        _sound = _restartButton.GetComponent<UIButtonSound>();
+        _pauseActions = actions;
     }
 
-    private void OnEnable()
+    public void SetStartMenu()
     {
-        _restartButton.onClick.AddListener(OnRestart);
+        gameObject.SetActive(true);
+        _endText.text = StartText;
+        _continueButton.gameObject.SetActive(false);
+        _restartButton.SetText(StartButtonText);
+        _restartButton.Clicked += OnRestart;
     }
 
-    private void OnDisable()
+    public void SetPauseMenu()
     {
-        _restartButton.onClick.RemoveListener(OnRestart);
-
-        if (_waitSound != null)
-            StopCoroutine(_waitSound);
+        gameObject.SetActive(true);
+        _endText.text = PauseText;
+        _continueButton.gameObject.SetActive(true);
+        _restartButton.SetText(RestartButtonText);
+        _restartButton.Clicked += OnRestart;
+        _continueButton.Clicked += OnContinue;
+        _pauseActions.PauseAction.Pause.performed += OnPausePressed;
     }
 
-    public void SetWinText() 
+    public void SetWinMenu() 
     {
-        _endText.text = WinEndText;
+        SetEndMenu(true);
     }
 
-    public void SetLoseText()
+    public void SetLoseMenu()
     {
-        _endText.text = LoseEndText;
+        SetEndMenu(false);
+    }
+
+    private void SetEndMenu(bool isWin)
+    {
+        gameObject.SetActive(true);
+        _continueButton.gameObject.SetActive(false);
+        _restartButton.SetText(RestartButtonText);
+        _restartButton.Clicked += OnRestart;
+
+        if (isWin)
+            _endText.text = WinEndText;
+        else
+            _endText.text = LoseEndText;
     }
 
     private void OnRestart()
     {
-        if(_waitSound != null)
-            StopCoroutine(_waitSound);
-
-        _waitSound = StartCoroutine(RaiseRestartedAfterSound());
+        _restartButton.Clicked -= OnRestart;
+        _continueButton.Clicked -= OnContinue;
+        _pauseActions.PauseAction.Pause.performed -= OnPausePressed;
+        EventSystem.current.SetSelectedGameObject(null);
+        gameObject.SetActive(false);
+        Restarted?.Invoke();
     }
 
-    private IEnumerator RaiseRestartedAfterSound()
+    private void OnPausePressed(InputAction.CallbackContext context) 
     {
-        float t = 0;
+        OnContinue();
+    }
 
-        while(t < _sound.ClickSoundLength)
-        {
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-        Restarted?.Invoke();
+    private void OnContinue()
+    {
+        _continueButton.Clicked -= OnContinue;
+        _restartButton.Clicked -= OnRestart;
+        _pauseActions.PauseAction.Pause.performed -= OnPausePressed;
+        EventSystem.current.SetSelectedGameObject(null);
+        gameObject.SetActive(false);
+        Continued?.Invoke();
     }
 }

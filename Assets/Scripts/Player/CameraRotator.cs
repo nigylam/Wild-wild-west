@@ -61,4 +61,12 @@ public class CameraRotator : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
     }
+
+    public void Restart(Quaternion worldRotation)
+    {
+        Vector3 euler = worldRotation.eulerAngles;
+        _yaw = euler.y;
+        _pitch = euler.x;
+        transform.rotation = Quaternion.Euler(_pitch, 0f, 0f);
+    }
 }

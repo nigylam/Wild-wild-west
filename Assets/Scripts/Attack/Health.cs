@@ -6,6 +6,7 @@ public class Health : MonoBehaviour, IDamageable, ICountable
     [SerializeField] private float _maxHealth = 100f;
 
     private float _currentHealth;
+    private bool _active = true;
 
     public event Action Dead;
     public event Action Changed;
@@ -30,15 +31,22 @@ public class Health : MonoBehaviour, IDamageable, ICountable
 
     public void TakeDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
+        if(_active == false) 
+            return;
+
         Current -= damage;
         Hited?.Invoke(hitPoint, hitNormal);
 
         if (Current <= 0)
+        {
+            _active = false;
             Dead?.Invoke();
+        }
     }
 
     public void Restart()
     {
         Current = _maxHealth;
+        _active = true;
     }
 }

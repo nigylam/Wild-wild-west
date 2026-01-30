@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
@@ -16,46 +15,20 @@ public class Player : MonoBehaviour
     [SerializeField] private CameraRotator _cameraRotator;
     [SerializeField] private Bar _healthBar;
 
-    private ThirdPersonActions _actions;
     private PlayerMover _mover;
     private Health _health;
     private PlayerAnimator _animator;
     private PlayerAttacker _attacker;
     private StepSound _sound;
     private Vector3 _startPosition;
+    private Quaternion _startRotation;
 
     public event Action Dead;
-
-    private void Awake()
-    {
-        _health = GetComponent<Health>();
-        _actions = new ThirdPersonActions();
-        _mover = GetComponent<PlayerMover>();
-        _animator = GetComponent<PlayerAnimator>();
-        _attacker = GetComponent<PlayerAttacker>();
-        _sound = GetComponent<StepSound>();
-
-        _attacker.Initialize(_actions, _camera);
-        _mover.Initialize(_camera, _cameraRotator, _actions, _movementForce, _jumpForce, _maxSpeed);
-        _animator.Initialize(_actions);
-        _healthBar.Initialize(_health);
-    }
-
-    private void OnEnable()
-    {
-        _health.Dead += OnDead;
-        _attacker.Attack += _animator.OnAttack;
-        _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
-        _attacker.FireWeaponChosen += _animator.OnFireWeaponChosen;
-        _mover.Jumped += _animator.OnJump;
-        _mover.Jumped += _sound.OnJumpStarted;
-        _mover.Landed += _sound.OnLanded;
-        _mover.Landed += _animator.OnLanded;
-    }
 
     private void Start()
     {
         _startPosition = transform.position;
+        _startRotation = transform.rotation;
     }
 
     private void OnDisable()
@@ -70,16 +43,46 @@ public class Player : MonoBehaviour
         _mover.Landed -= _animator.OnLanded;
     }
 
+    public void Initialize(ThirdPersonActions actions)
+    {
+        _health = GetComponent<Health>();
+        _mover = GetComponent<PlayerMover>();
+        _animator = GetComponent<PlayerAnimator>();
+        _attacker = GetComponent<PlayerAttacker>();
+        _sound = GetComponent<StepSound>();
+
+        _attacker.Initialize(actions, _camera);
+        _mover.Initialize(_camera, _cameraRotator, actions, _movementForce, _jumpForce, _maxSpeed);
+        _animator.Initialize(actions);
+        _healthBar.Initialize(_health);
+
+        _health.Dead += OnDead;
+        _attacker.Attack += _animator.OnAttack;
+        _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
+        _attacker.FireWeaponChosen += _animator.OnFireWeaponChosen;
+        _mover.Jumped += _animator.OnJump;
+        _mover.Jumped += _sound.OnJumpStarted;
+        _mover.Landed += _sound.OnLanded;
+        _mover.Landed += _animator.OnLanded;
+    }
+
     public void Restart()
     {
-        _mover.enabled = true;
-        _cameraRotator.enabled = true;
         _health.Restart();
         _healthBar.Initialize(_health);
         transform.position = _startPosition;
+        transform.rotation = Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f);
+        _cameraRotator.Restart(_startRotation);
+        _mover.Restart();
     }
 
-    public void DisableControl()
+    public void Enable()
+    {
+        _mover.enabled = true;
+        _cameraRotator.enabled = true;
+    }
+
+    public void Disable()
     {
         _mover.enabled = false;
         _cameraRotator.enabled = false;

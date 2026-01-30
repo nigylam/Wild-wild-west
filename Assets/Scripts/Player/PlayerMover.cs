@@ -30,16 +30,12 @@ public class PlayerMover : MonoBehaviour
     private void OnEnable()
     {
         if (_actions != null)
-        {
-            _actions.Player.Jump.started += OnJump;
-            _actions.Enable();
-        }
+            _actions.Player.Jump.performed += OnJump;
     }
 
     private void OnDisable()
     {
-        _actions.Player.Jump.started -= OnJump;
-        _actions.Disable();
+        _actions.Player.Jump.performed -= OnJump;
     }
 
     private void FixedUpdate()
@@ -48,9 +44,7 @@ public class PlayerMover : MonoBehaviour
         RotateToCamera();
 
         if (_wasGrounded == false && IsGrounded())
-        {
             Landed?.Invoke();
-        }
 
         _wasGrounded = IsGrounded();
     }
@@ -68,6 +62,11 @@ public class PlayerMover : MonoBehaviour
         _actions.Enable();
     }
 
+    public void Restart()
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
+
     private void RotateToCamera()
     {
         Quaternion targetRotation = Quaternion.Euler(0, _cameraRotator.Yaw, 0);
@@ -78,7 +77,6 @@ public class PlayerMover : MonoBehaviour
     {
         Vector3 camForward = Vector3.ProjectOnPlane(_camera.transform.forward, Vector3.up).normalized;
         Vector3 camRight = Vector3.ProjectOnPlane(_camera.transform.right, Vector3.up).normalized;
-
         Vector2 input = _moveAction.ReadValue<Vector2>();
         Vector3 moveDir = camForward * input.y + camRight * input.x;
         _forceDirection += moveDir * _movementForce;
