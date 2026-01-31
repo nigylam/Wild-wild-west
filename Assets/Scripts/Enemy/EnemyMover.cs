@@ -18,7 +18,7 @@ public class EnemyMover : MonoBehaviour
     private float _jumpDelay = 0.5f;
     private float _updateRate = 0.2f;
     private float _timer;
-    private float _rotationSpeed = 2f;
+    private float _rotationSpeed = 120f;
     private float _angleAttackOffset = 0.001f;
     private float _jumpForce = 2f;
     private float _groundCheckOffset = 0.25f;
@@ -38,11 +38,11 @@ public class EnemyMover : MonoBehaviour
             return;
 
         MoveNavmesh();
+        RotateTowardsTarget();
     }
 
     private void FixedUpdate()
     {
-
         if (_wasGrounded == false && IsGrounded())
         {
             Landed?.Invoke();
@@ -55,6 +55,7 @@ public class EnemyMover : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _agent = agent;
+        _agent.updateRotation = false;
         _agent.enabled = false;
         _agent.radius *= transform.lossyScale.x;
         _agent.height *= transform.lossyScale.y;
@@ -82,7 +83,11 @@ public class EnemyMover : MonoBehaviour
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            _rotationSpeed * Time.deltaTime
+        );
     }
 
     private IEnumerator Jump()
@@ -156,7 +161,7 @@ public class EnemyMover : MonoBehaviour
 
             _isStartMovingSent = false;
             _agent.isStopped = true;
-            RotateTowardsTarget();
+            
 
             if (_weapon.TryAttack())
                 Attack?.Invoke();
