@@ -18,7 +18,7 @@ public class EnemyMover : MonoBehaviour
     private float _jumpDelay = 0.5f;
     private float _updateRate = 0.2f;
     private float _timer;
-    private float _rotationSpeed = 1f;
+    private float _rotationSpeed = 2f;
     private float _angleAttackOffset = 0.001f;
     private float _jumpForce = 2f;
     private float _groundCheckOffset = 0.25f;

@@ -460,7 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackSound: {fileID: 8300000, guid: 9d8c550214f49374a9a1c5e7fe72963c, type: 3}
   _pitchOffset: 0.1
-  _reloadSound: {fileID: 8300000, guid: 7ab8e68d144ec1949871de23acc349c1, type: 3}
+  _reloadSound: {fileID: 8300000, guid: 8a0960b49fb10a94b92b458beb371090, type: 3}
 --- !u!1001 &2737277773651274978
 PrefabInstance:
   m_ObjectHideFlags: 0

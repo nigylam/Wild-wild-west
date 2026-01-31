@@ -10,14 +10,15 @@ public class PlayerAnimator : MonoBehaviour
     private readonly int AnimatorFire = Animator.StringToHash("Attack");
     private readonly int AnimatorJump = Animator.StringToHash("Jump");
     private readonly int AnimatorActiveWeaponType = Animator.StringToHash("ActiveWeaponType");
+    private readonly int AnimatorHit = Animator.StringToHash("Hit");
+    private readonly int AnimatorDeath = Animator.StringToHash("Death");
+    private readonly int AnimatorRestart = Animator.StringToHash("Restart");
     private readonly float RigMaxWeight = 1;
 
     [SerializeField] private Animator _animator;
     [SerializeField] private Rig _rig;
 
     private InputAction _moveAction;
-    private bool _isMoving;
-    private bool _canWalk = true;
     private int _gunLayer;
     private int _meleeLayer;
 
@@ -31,26 +32,17 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator.SetFloat(AnimatorMoveForward, _moveAction.ReadValue<Vector2>().y);
         _animator.SetFloat(AnimatorMoveRight, _moveAction.ReadValue<Vector2>().x);
-        SetMovingBool();
-    }
-
-    private void SetMovingBool()
-    {
-        bool isMoving = _moveAction.ReadValue<Vector2>() != Vector2.zero;
-
-        if(_canWalk == false)
-            isMoving = false;
-
-        if (_isMoving == isMoving)
-            return;
-
-        _isMoving = isMoving;
-        _animator.SetBool(AnimatorIsMoving, _isMoving);
+        _animator.SetBool(AnimatorIsMoving, _moveAction.ReadValue<Vector2>() != Vector2.zero);
     }
 
     public void Initialize(ThirdPersonActions actions)
     {
         _moveAction = actions.Player.Move;
+    }
+
+    public void Restart()
+    {
+        _animator.SetTrigger(AnimatorRestart);
     }
 
     public void OnAttack()
@@ -77,11 +69,15 @@ public class PlayerAnimator : MonoBehaviour
     public void OnJump()
     {
         _animator.SetTrigger(AnimatorJump);
-        _canWalk = false;
     }
 
-    public void OnLanded()
+    public void OnHit(Vector3 _, Vector3 __)
     {
-        _canWalk = true;
+        _animator.SetTrigger(AnimatorHit);
+    }
+
+    public void OnDeath()
+    {
+        _animator.SetTrigger(AnimatorDeath);
     }
 }

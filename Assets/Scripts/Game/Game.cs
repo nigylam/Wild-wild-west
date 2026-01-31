@@ -31,6 +31,7 @@ public class Game : MonoBehaviour
     private int _roundBossesCount;
     private float _roundLength;
     private int _enemiesTotal;
+    private bool _isGameActive = false;
     private GameState _gameState;
 
     private void Awake()
@@ -75,6 +76,7 @@ public class Game : MonoBehaviour
 
     private void StartGame()
     {
+        _isGameActive = true;
         AudioListener.pause = false;
         _actions.Enable();
         _gameState = GameState.Active;
@@ -146,6 +148,9 @@ public class Game : MonoBehaviour
 
     private void ProcessRounds()
     {
+        if (_isGameActive == false)
+            return;
+
         if (_roundCounter.Current >= _roundsCount)
         {
             End(true);
@@ -170,6 +175,7 @@ public class Game : MonoBehaviour
 
     private void End(bool isWin)
     {
+        _isGameActive = false;
         _player.Disable();
         _actions.Disable();
         _gameState = GameState.NotStarted;

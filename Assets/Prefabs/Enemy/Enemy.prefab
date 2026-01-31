@@ -1471,7 +1471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c82ffc31826854289feb1d5c7fe7cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRange: 1
+  _attackRange: 1.2
   _weapon: {fileID: 3460849064112712706}
   _bridgeLayer:
     serializedVersion: 2

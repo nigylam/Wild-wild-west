@@ -5,11 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMover))]
 public class Player : MonoBehaviour
 {
-    [Header("Parametres")]
-    [SerializeField] private float _movementForce = 1f;
-    [SerializeField] private float _jumpForce = 5f;
-    [SerializeField] private float _maxSpeed = 10f;
-
     [Header("Links")]
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraRotator _cameraRotator;
@@ -40,7 +35,7 @@ public class Player : MonoBehaviour
         _mover.Jumped -= _animator.OnJump;
         _mover.Jumped -= _sound.OnJumpStarted;
         _mover.Landed -= _sound.OnLanded;
-        _mover.Landed -= _animator.OnLanded;
+        _health.Hited -= _animator.OnHit;
     }
 
     public void Initialize(ThirdPersonActions actions)
@@ -52,7 +47,7 @@ public class Player : MonoBehaviour
         _sound = GetComponent<StepSound>();
 
         _attacker.Initialize(actions, _camera);
-        _mover.Initialize(_camera, _cameraRotator, actions, _movementForce, _jumpForce, _maxSpeed);
+        _mover.Initialize(_camera, _cameraRotator, actions);
         _animator.Initialize(actions);
         _healthBar.Initialize(_health);
 
@@ -63,17 +58,18 @@ public class Player : MonoBehaviour
         _mover.Jumped += _animator.OnJump;
         _mover.Jumped += _sound.OnJumpStarted;
         _mover.Landed += _sound.OnLanded;
-        _mover.Landed += _animator.OnLanded;
+        _health.Hited += _animator.OnHit;
     }
 
     public void Restart()
     {
         _health.Restart();
+        _animator.Restart();
         _healthBar.Initialize(_health);
-        transform.position = _startPosition;
-        transform.rotation = Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f);
         _cameraRotator.Restart(_startRotation);
         _mover.Restart();
+        transform.position = _startPosition;
+        transform.rotation = Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f);
     }
 
     public void Enable()
@@ -91,5 +87,6 @@ public class Player : MonoBehaviour
     private void OnDead()
     {
         Dead?.Invoke();
+        _animator.OnDeath();
     }
 }

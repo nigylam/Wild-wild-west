@@ -5,6 +5,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMover : MonoBehaviour
 {
+    [SerializeField] private float _movementForce = 1f;
+    [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private float _maxSpeed = 10f;
+    [SerializeField] private float _backMovementForceDecrease = 0.5f;
+
     private Camera _camera;
     private CameraRotator _cameraRotator;
     private ThirdPersonActions _actions;
@@ -13,10 +18,6 @@ public class PlayerMover : MonoBehaviour
     private Vector3 _forceDirection;
     private float _groundCheckOffset = 0.25f;
     private float _groundCheckHeight = 1f;
-    private float _movementForce;
-    private float _movementForceDecrease = 0.5f;
-    private float _jumpForce;
-    private float _maxSpeed;
     private bool _wasGrounded = true;
 
     public event Action Jumped;
@@ -49,15 +50,12 @@ public class PlayerMover : MonoBehaviour
         _wasGrounded = IsGrounded();
     }
 
-    public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions, float movementForce, float jumpForce, float maxSpeed)
+    public void Initialize(Camera camera, CameraRotator cameraRotator, ThirdPersonActions actions)
     {
         _camera = camera;
         _cameraRotator = cameraRotator;
         _actions = actions;
         _moveAction = _actions.Player.Move;
-        _movementForce = movementForce;
-        _jumpForce = jumpForce;
-        _maxSpeed = maxSpeed;
         _actions.Player.Jump.started += OnJump;
         _actions.Enable();
     }
@@ -82,7 +80,7 @@ public class PlayerMover : MonoBehaviour
         _forceDirection += moveDir * _movementForce;
 
         if (input != new Vector2(0, 1))
-            _forceDirection *= _movementForceDecrease;
+            _forceDirection *= _backMovementForceDecrease;
 
         _rigidbody.AddForce(_forceDirection, ForceMode.Impulse);
         _forceDirection = Vector3.zero;

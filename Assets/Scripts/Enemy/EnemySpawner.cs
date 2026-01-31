@@ -65,11 +65,16 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemiesCount; i++)
         {
             Spawn(EnemyType.Enemy);
-
             int numberIterations = Convert.ToInt32(spawnRate / _waitStep);
 
-            if (enemiesCount - i <= bossesCount)
-                Spawn(EnemyType.Boss);
+            for (int a = 0; a < numberIterations; a++)
+                yield return _spawnWait;
+        }
+
+        for (int i = 0; i < bossesCount; i++)
+        {
+            Spawn(EnemyType.Boss);
+            int numberIterations = Convert.ToInt32(spawnRate / _waitStep);
 
             for (int a = 0; a < numberIterations; a++)
                 yield return _spawnWait;
