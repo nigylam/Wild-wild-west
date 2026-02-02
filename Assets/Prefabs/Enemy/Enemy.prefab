@@ -69,7 +69,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &238426153074888943
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &294490753625634422
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 3
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &1427864006175041825
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +425,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &2422965659079307599
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +494,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &3083752558971015477
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +563,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 1
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &5897468486135060508
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +632,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &6491314206796550113
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +701,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &8192843977816975722
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,7 +770,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1 &8421786948654643205
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,7 +839,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageMultiplier: 0.8
-  _health: {fileID: 3205283464774586390}
 --- !u!1001 &5066384574191520895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1422,6 +1412,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stepSound: {fileID: 6392267598939042308}
+  _hitboxes:
+  - {fileID: 2247956775295336139}
+  - {fileID: 2935248123965638844}
+  - {fileID: 7788866214872946616}
+  - {fileID: 4165696508716756588}
+  - {fileID: 2603027452853908246}
+  - {fileID: 1201551833704796076}
+  - {fileID: 6132416773981247769}
+  - {fileID: 7250663718913817536}
+  - {fileID: 1658864430013447501}
+  - {fileID: 4362915530055990507}
 --- !u!114 &1490075178573202738
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IDamageable, ICountable
+public class Health : MonoBehaviour, ICountable
 {
     [SerializeField] private float _maxHealth = 100f;
 
@@ -10,7 +10,6 @@ public class Health : MonoBehaviour, IDamageable, ICountable
 
     public event Action Dead;
     public event Action Changed;
-    public event Action<Vector3, Vector3> Hited;
 
     public float Max => _maxHealth;
 
@@ -29,13 +28,12 @@ public class Health : MonoBehaviour, IDamageable, ICountable
         Restart();
     }
 
-    public void TakeDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
+    public void TakeDamage(float damage)
     {
         if(_active == false) 
             return;
 
         Current -= damage;
-        Hited?.Invoke(hitPoint, hitNormal);
 
         if (Current <= 0)
         {

@@ -9,13 +9,13 @@ public class MeleeAttackBehaviour : StateMachineBehaviour
 
     private MeleeWeaponAnimationEventSender _sender;
 
-    private bool _hitSent;
+    private bool _isHitSent;
 
     public override void OnStateEnter(
         Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _sender = animator.GetComponent<MeleeWeaponAnimationEventSender>();
-        _hitSent = false;
+        _isHitSent = false;
     }
 
     public override void OnStateUpdate(
@@ -23,13 +23,13 @@ public class MeleeAttackBehaviour : StateMachineBehaviour
     {
         float t = stateInfo.normalizedTime % 1f;
 
-        if (_hitSent == false && t >= _hitStart)
+        if (_isHitSent == false && t >= _hitStart)
         {
             _sender?.RaiseAttackHitEnable();
-            _hitSent = true;
+            _isHitSent = true;
         }
 
-        if (_hitSent && t >= _hitEnd)
+        if (_isHitSent && t >= _hitEnd)
         {
             _sender?.RaiseAttackHitDisable();
         }

@@ -6,17 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(RoundCounter))]
 public class Game : MonoBehaviour
 {
-    [Header("Stats")]
-    [SerializeField] private int _roundsCount;
-    [SerializeField] private float _roundStartDelay;
-    [SerializeField] private int _roundStartEnemies;
-    [SerializeField] private float _roundStartLength;
-    [SerializeField] private int _roundEnemiesIncrement;
-    [SerializeField] private float _roundLengthIncrement;
-    [SerializeField] private int _bossesStartCount;
-    [SerializeField] private int _bossesIncrement;
-
-    [Header("Links")]
+    [SerializeField] private RoundSet _roundSet;
     [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private Player _player;
     [SerializeField] private OverlayMenu _overlay;
@@ -27,9 +17,6 @@ public class Game : MonoBehaviour
     private PauseActions _pauseActions;
     private GameSound _sound;
     private RoundCounter _roundCounter;
-    private int _roundEnemiesCount;
-    private int _roundBossesCount;
-    private float _roundLength;
     private int _enemiesTotal;
     private bool _isGameActive = false;
     private GameState _gameState;
@@ -87,11 +74,15 @@ public class Game : MonoBehaviour
         Time.timeScale = 1f;
         _player.Enable();
         _roundCounter.Reset();
-        _roundEnemiesCount = _roundStartEnemies;
-        _roundBossesCount = _bossesStartCount;
-        _roundLength = _roundStartLength;
-        _enemiesTotal = _roundEnemiesCount + _roundBossesCount;
-        _enemySpawner.StartRound(_roundLength, _roundEnemiesCount, _roundBossesCount, _roundStartDelay);
+        _roundSet.StartSet();
+        StartRound();
+    }
+
+    private void StartRound()
+    {
+        Round currentRound = _roundSet.CurrentRound;
+        _enemiesTotal = currentRound.EnemiesCount + currentRound.BossesCount;
+        _enemySpawner.StartRound(currentRound.RoundLength, currentRound.EnemiesCount, currentRound.BossesCount, _roundSet.RoundDelay);
     }
 
     private void OnPause(InputAction.CallbackContext context)
@@ -151,7 +142,7 @@ public class Game : MonoBehaviour
         if (_isGameActive == false)
             return;
 
-        if (_roundCounter.Current >= _roundsCount)
+        if (_roundCounter.Current >= _roundSet.RoundsCount)
         {
             End(true);
             _sound.PlayWinGame();
@@ -160,11 +151,8 @@ public class Game : MonoBehaviour
 
         _sound.PlayEndRound();
         _roundCounter.Increase();
-        _roundEnemiesCount += _roundEnemiesIncrement;
-        _roundBossesCount += _bossesIncrement;
-        _roundLength += _roundLengthIncrement;
-        _enemiesTotal = _roundEnemiesCount + _roundBossesCount;
-        _enemySpawner.StartRound(_roundLength, _roundEnemiesCount, _roundBossesCount, _roundStartDelay);
+        _roundSet.ProcessRound();
+        StartRound();
     }
 
     private void OnPlayerDead()

@@ -3,9 +3,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(PlayerMover))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
-    [Header("Links")]
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraRotator _cameraRotator;
     [SerializeField] private Bar _healthBar;
@@ -15,6 +14,7 @@ public class Player : MonoBehaviour
     private PlayerAnimator _animator;
     private PlayerAttacker _attacker;
     private StepSound _sound;
+    private Hitbox _hitbox;
     private Vector3 _startPosition;
     private Quaternion _startRotation;
 
@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
         _mover.Jumped -= _animator.OnJump;
         _mover.Jumped -= _sound.OnJumpStarted;
         _mover.Landed -= _sound.OnLanded;
-        _health.Hited -= _animator.OnHit;
     }
 
     public void Initialize(ThirdPersonActions actions)
@@ -45,11 +44,13 @@ public class Player : MonoBehaviour
         _animator = GetComponent<PlayerAnimator>();
         _attacker = GetComponent<PlayerAttacker>();
         _sound = GetComponent<StepSound>();
+        _hitbox = GetComponent<Hitbox>();
 
         _attacker.Initialize(actions, _camera);
         _mover.Initialize(_camera, _cameraRotator, actions);
         _animator.Initialize(actions);
         _healthBar.Initialize(_health);
+        _hitbox.Initialize(this);
 
         _health.Dead += OnDead;
         _attacker.Attack += _animator.OnAttack;
@@ -58,7 +59,6 @@ public class Player : MonoBehaviour
         _mover.Jumped += _animator.OnJump;
         _mover.Jumped += _sound.OnJumpStarted;
         _mover.Landed += _sound.OnLanded;
-        _health.Hited += _animator.OnHit;
     }
 
     public void Restart()
@@ -68,8 +68,7 @@ public class Player : MonoBehaviour
         _healthBar.Initialize(_health);
         _cameraRotator.Restart(_startRotation);
         _mover.Restart();
-        transform.position = _startPosition;
-        transform.rotation = Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f);
+        transform.SetPositionAndRotation(_startPosition, Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f));
     }
 
     public void Enable()
@@ -82,6 +81,12 @@ public class Player : MonoBehaviour
     {
         _mover.enabled = false;
         _cameraRotator.enabled = false;
+    }
+
+    public void TakeDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
+    {
+        _health.TakeDamage(damage);
+        _animator.OnHit(hitPoint, hitNormal);
     }
 
     private void OnDead()

@@ -8,8 +8,8 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float Damage;
     [SerializeField] private float _cooldownTime;
 
-    private Coroutine _cooldown;
     protected bool CanAttack = true;
+    private Coroutine _cooldown;
 
     public event Action AttackStarted;
     public event Action AttackEnded;

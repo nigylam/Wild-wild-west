@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f3ee0d1fef12c409479b7b520c8b74, type: 3}
+  m_Name: RoundSet
+  m_EditorClassIdentifier: 
+  _rounds:
+  - {fileID: 11400000, guid: 06cd7b07d2e5503479e9f3d7b5ba5f20, type: 2}
+  - {fileID: 11400000, guid: 29dbdbec4583e5b4c8aecbf3ae6b361c, type: 2}
+  - {fileID: 11400000, guid: b9bbfe75c22504c4ca7c55d72bd1a5e2, type: 2}
+  _roundDelay: 4

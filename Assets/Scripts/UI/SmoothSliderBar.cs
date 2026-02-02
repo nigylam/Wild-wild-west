@@ -12,7 +12,7 @@ public class SmoothSliderBar : SliderBar
 
     public override void ChangeValue()
     {
-        float targetValue = Convert.ToSingle(Stat.Current) / Stat.Max;
+        float targetValue = Stat.Current / Stat.Max;
 
         if (_smoothChange != null)
             StopCoroutine(_smoothChange);
