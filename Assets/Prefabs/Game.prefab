@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1381495941224633731}
   - component: {fileID: 7312888941076311721}
-  - component: {fileID: 3781269076499106409}
+  - component: {fileID: 4641198724824163169}
   - component: {fileID: 1999780406072558041}
   - component: {fileID: 7108705492860775101}
   m_Layer: 0
@@ -44,9 +44,9 @@ AudioSource:
   m_GameObject: {fileID: 707574381665940429}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3556462424819069950, guid: eb5e07b8410230d468d7d85ff1affb21, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -131,7 +131,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3781269076499106409
+--- !u!114 &4641198724824163169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,20 +140,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 707574381665940429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37a60f5df547b5b4ba9a3c46c28b55fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a52ada5242382c43a9b3567de36cfb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roundsCount: 2
-  _roundStartDelay: 1
-  _roundStartEnemies: 1
-  _roundStartLength: 5
-  _roundEnemiesIncrement: 2
-  _roundLengthIncrement: 3
-  _bossesCount: 1
-  _enemySpawner: {fileID: 0}
   _player: {fileID: 0}
+  _spawner: {fileID: 0}
   _overlay: {fileID: 0}
-  _HUD: {fileID: 0}
+  _roundSet: {fileID: 11400000, guid: 4046f4bbe746c174abdc172e1b10b9e1, type: 2}
+  _hud: {fileID: 0}
   _roundBar: {fileID: 0}
 --- !u!114 &1999780406072558041
 MonoBehaviour:

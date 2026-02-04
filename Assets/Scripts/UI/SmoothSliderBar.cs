@@ -17,13 +17,8 @@ public class SmoothSliderBar : SliderBar
         if (_smoothChange != null)
             StopCoroutine(_smoothChange);
 
-        _smoothChange = StartCoroutine(SmoothChangeValue(targetValue));
-    }
-
-    public override void Initialize(ICountable stat)
-    {
-        base.Initialize(stat);
         _smoothStepDelay = new WaitForSeconds(_changeSpeed);
+        _smoothChange = StartCoroutine(SmoothChangeValue(targetValue));
     }
 
     private IEnumerator SmoothChangeValue(float targetValue)

@@ -21,6 +21,11 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnDisable()
     {
+        Restart();
+    }
+
+    public virtual void Restart()
+    {
         CanAttack = true;
 
         if (_cooldown != null)

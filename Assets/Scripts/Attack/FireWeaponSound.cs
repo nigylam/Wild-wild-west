@@ -16,6 +16,14 @@ public class FireWeaponSound : WeaponSound
             StopCoroutine(_playReloadAfterShot);
     }
 
+    public void Restart()
+    {
+        AudioSource.Stop();
+
+        if (_playReloadAfterShot != null)
+            StopCoroutine(_playReloadAfterShot);
+    }
+
     public override void PlayAttackSound()
     {
         base.PlayAttackSound();

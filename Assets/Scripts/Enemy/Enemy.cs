@@ -20,14 +20,17 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public event Action<Enemy> Dead;
 
-    public void Initialize(Transform target, Transform parrent, Vector3 position, Quaternion rotation, EffectSpawner hitEffectSpawner)
+    private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<EnemyAnimator>();
         _health = GetComponent<Health>();
         _mover = GetComponent<EnemyMover>();
         _sound = GetComponent<EnemySound>();
+    }
 
+    public void Initialize(Transform target, Transform parrent, Vector3 position, Quaternion rotation, EffectSpawner hitEffectSpawner)
+    {
         _mover.Initialize(_agent, target);
         _hitEffectSpawner = hitEffectSpawner;
         transform.SetParent(parrent);

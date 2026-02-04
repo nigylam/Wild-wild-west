@@ -14,16 +14,19 @@ public class FireWeapon : Weapon
 
     public event Action ShotEnded;
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
-
     public void Initialize(Camera camera)
     {
         _camera = camera;
         _sound = GetComponent<FireWeaponSound>();
         _sound.ShotSoundPlayed += OnShotSoundPlayed;
+    }
+
+    public override void Restart()
+    {
+        base.Restart();
+        _shotEffect.Stop();
+        _shotEffect.Clear();
+        _sound.Restart();
     }
 
     protected override void Attack()
@@ -33,7 +36,7 @@ public class FireWeapon : Weapon
 
         base.Attack();
 
-        Vector2 screenCenter = new Vector2(0.5f, 0.5f);
+        Vector2 screenCenter = new(0.5f, 0.5f);
         Ray ray = _camera.ViewportPointToRay(screenCenter);
 
         if (Physics.Raycast(ray, out RaycastHit hit, _maxShootDistance))

@@ -32,6 +32,11 @@ public class EnemyMover : MonoBehaviour
     public event Action StartMoving;
     public event Action Landed;
 
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+
     private void Update()
     {
         if (_agent.enabled == false)
@@ -53,7 +58,6 @@ public class EnemyMover : MonoBehaviour
 
     public void Initialize(NavMeshAgent agent, Transform target)
     {
-        _rigidbody = GetComponent<Rigidbody>();
         _agent = agent;
         _agent.updateRotation = false;
         _agent.enabled = false;

@@ -27,7 +27,6 @@ public class PlayerAttacker : MonoBehaviour
         _fireWeapon.ShotEnded += OnAttackEnded;
     }
 
-
     private void OnDisable()
     {
         _actions.Player.Attack.started -= OnAttack;
@@ -46,6 +45,18 @@ public class PlayerAttacker : MonoBehaviour
         _actions = actions;
         _actions.Player.Attack.started += OnAttack;
         _actions.Player.Changeweapon.started += OnChangeWeapon;
+    }
+
+    public void Restart()
+    {
+        _fireWeapon.Restart();
+        _meleeWeapon.Restart();
+
+        if (_activeWeapon is MeleeWeapon)
+        {
+            SwitchWeapon(_fireWeapon);
+            FireWeaponChosen?.Invoke();
+        }
     }
 
     private void OnAttack(InputAction.CallbackContext context)

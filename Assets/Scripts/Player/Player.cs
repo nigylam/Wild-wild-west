@@ -7,7 +7,6 @@ public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraRotator _cameraRotator;
-    [SerializeField] private Bar _healthBar;
 
     private PlayerMover _mover;
     private Health _health;
@@ -49,7 +48,6 @@ public class Player : MonoBehaviour, IDamageable
         _attacker.Initialize(actions, _camera);
         _mover.Initialize(_camera, _cameraRotator, actions);
         _animator.Initialize(actions);
-        _healthBar.Initialize(_health);
         _hitbox.Initialize(this);
 
         _health.Dead += OnDead;
@@ -61,11 +59,16 @@ public class Player : MonoBehaviour, IDamageable
         _mover.Landed += _sound.OnLanded;
     }
 
+    public void SetHealthBar(Bar bar)
+    {
+        bar.Initialize(_health);
+    }
+
     public void Restart()
     {
+        _attacker.Restart();
         _health.Restart();
         _animator.Restart();
-        _healthBar.Initialize(_health);
         _cameraRotator.Restart(_startRotation);
         _mover.Restart();
         transform.SetPositionAndRotation(_startPosition, Quaternion.Euler(0f, _startRotation.eulerAngles.y, 0f));
