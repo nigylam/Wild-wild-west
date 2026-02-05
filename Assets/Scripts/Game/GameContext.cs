@@ -1,6 +1,7 @@
 public class GameContext
 {
-    public GameContext(Player player, EnemySpawner spawner, OverlayMenu overlay, GameSound sound, RoundSet rounds, RoundCounter counter, ThirdPersonActions actions, PauseActions pauseAction, HUD hud) 
+    public GameContext(Player player, EnemySpawner spawner, OverlayMenu overlay, GameSound sound, 
+        RoundSet rounds, RoundCounter counter, ThirdPersonActions actions, PauseActions pauseAction, HUD hud) 
     {
         Player = player;
         Spawner = spawner;
@@ -9,6 +10,7 @@ public class GameContext
         Rounds = rounds;
         Counter = counter;
         Actions = actions;
+        PauseAction = pauseAction;
         HUD = hud;
     }
 

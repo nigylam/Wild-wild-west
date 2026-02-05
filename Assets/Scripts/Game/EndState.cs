@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EndState : GameState
 {
@@ -12,7 +11,8 @@ public class EndState : GameState
 
     public override void Enter()
     {
-        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         Context.Actions.Disable();
         Context.Player.Disable();
@@ -36,11 +36,12 @@ public class EndState : GameState
     {
         Context.Spawner.Restart();
         Context.Player.Restart();
+        Context.Sound.Stop();
         Context.Overlay.Restarted -= Restart;
     }
 
     private void Restart()
     {
-        StateMachine.ChangeState(GameStateType.Start);
+        StateMachine.ChangeState(GameStateType.Active);
     }
 }

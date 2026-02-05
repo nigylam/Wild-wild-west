@@ -17,13 +17,12 @@ public class Bootstraper : MonoBehaviour
     {
         var sound = GetComponent<GameSound>();
         var counter = GetComponent<RoundCounter>();
+        var playerInputActions = new ThirdPersonActions();
+        var pauseInputAction = new PauseActions();
 
-        var actions = new ThirdPersonActions();
-        var pause = new PauseActions();
-
-        _player.Initialize(actions);
-        _hud.Initialize(counter, _player);
-        _overlay.Initialize(pause);
+        _player.Initialize(playerInputActions);
+        _overlay.Initialize(pauseInputAction);
+        _hud.Initialize(counter);
 
         _context = new GameContext
         (
@@ -33,8 +32,8 @@ public class Bootstraper : MonoBehaviour
             sound,
             _roundSet,
             counter,
-            actions,
-            pause,
+            playerInputActions,
+            pauseInputAction,
             _hud
         );
 

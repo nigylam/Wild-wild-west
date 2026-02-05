@@ -4,11 +4,12 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private SmoothSliderBar _healthBar;
     [SerializeField] private TextBar _roundCounter;
+    [SerializeField] private Health _playerHealth;
 
-    public void Initialize(ICountable roundCounter, Player player)
+    public void Initialize(ICountable roundCounter)
     {
         _roundCounter.Initialize(roundCounter);
-        player.SetHealthBar(_healthBar);
+        _healthBar.Initialize(_playerHealth);
     }
 
     public void Enable()

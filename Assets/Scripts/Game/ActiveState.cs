@@ -11,6 +11,10 @@ public class ActiveState : GameState
     {
         Resume();
         StartGame();
+        Context.Spawner.EnemyKilled += OnEnemyKilled;
+        Context.Player.Dead += OnPlayerDead;
+        Context.PauseAction.PauseAction.Pause.performed += OnPause;
+        Context.Spawner.RoundStarted += Context.Sound.PlayStartRound;
     }
 
     public override void Resume()
@@ -25,11 +29,6 @@ public class ActiveState : GameState
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        Context.Spawner.EnemyKilled += OnEnemyKilled;
-        Context.Player.Dead += OnPlayerDead;
-        Context.PauseAction.PauseAction.Pause.performed += OnPause;
-        Context.Spawner.RoundStarted += Context.Sound.PlayStartRound;
     }
 
     private void OnPlayerDead()
@@ -66,6 +65,7 @@ public class ActiveState : GameState
         Context.Player.Dead -= OnPlayerDead;
         Context.PauseAction.PauseAction.Pause.performed -= OnPause;
         Context.Spawner.RoundStarted -= Context.Sound.PlayStartRound;
+        Context.Spawner.Stop();
     }
 
     private void StartGame()
@@ -78,7 +78,6 @@ public class ActiveState : GameState
     private void StartRound()
     {
         Round round = Context.Rounds.CurrentRound;
-
         _enemiesTotal = round.EnemiesCount + round.BossesCount;
 
         Context.Spawner.StartRound(

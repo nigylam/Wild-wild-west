@@ -18,7 +18,6 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Rig _rig;
 
-    private InputAction _moveAction;
     private int _gunLayer;
     private int _meleeLayer;
 
@@ -28,16 +27,11 @@ public class PlayerAnimator : MonoBehaviour
         _meleeLayer = _animator.GetLayerIndex("UpperBody_Melee");
     }
 
-    private void Update()
+    public void ProcessMovingAnimations(Vector2 input)
     {
-        _animator.SetFloat(AnimatorMoveForward, _moveAction.ReadValue<Vector2>().y);
-        _animator.SetFloat(AnimatorMoveRight, _moveAction.ReadValue<Vector2>().x);
-        _animator.SetBool(AnimatorIsMoving, _moveAction.ReadValue<Vector2>() != Vector2.zero);
-    }
-
-    public void Initialize(ThirdPersonActions actions)
-    {
-        _moveAction = actions.Player.Move;
+        _animator.SetFloat(AnimatorMoveForward, input.y);
+        _animator.SetFloat(AnimatorMoveRight, input.x);
+        _animator.SetBool(AnimatorIsMoving, input != Vector2.zero);
     }
 
     public void Restart()

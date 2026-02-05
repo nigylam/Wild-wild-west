@@ -9757,6 +9757,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7096590454119794089, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
   m_PrefabInstance: {fileID: 5674699633371663780}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &758976634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6997685050045691685, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
+  m_PrefabInstance: {fileID: 5674699633371663780}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526f2b1d6dfa65548996fc5c75b84f84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &759213228 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1526102519333160, guid: 5810d5798a340174a9a2da12a0ae477b, type: 3}
@@ -13377,6 +13388,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8019763667240568967, guid: fb3ffb0bf53d6e94ea09fbab3a7aa72d, type: 3}
+      propertyPath: _playerHealth
+      value: 
+      objectReference: {fileID: 758976634}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26800,10 +26815,18 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 281953054}
+    - target: {fileID: 1308717606245827333, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
+      propertyPath: _jumpForce
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1442993316754050637, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 281953054}
+    - target: {fileID: 4651849961702868317, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
+      propertyPath: _damageMultiplier
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6095614891025694441, guid: e6a5afcbf5c592f4dbe4bdab12a66f78, type: 3}
       propertyPath: _camera
       value: 

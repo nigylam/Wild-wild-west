@@ -1,13 +1,19 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(PlayerInputReader))]
 [RequireComponent(typeof(PlayerMover))]
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerAttacker))]
+[RequireComponent(typeof(StepSound))]
+[RequireComponent(typeof(Hitbox))]
 public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraRotator _cameraRotator;
 
+    private PlayerInputReader _inputReader;
     private PlayerMover _mover;
     private Health _health;
     private PlayerAnimator _animator;
@@ -36,20 +42,30 @@ public class Player : MonoBehaviour, IDamageable
         _mover.Landed -= _sound.OnLanded;
     }
 
-    public void Initialize(ThirdPersonActions actions)
+    private void FixedUpdate()
     {
-        _health = GetComponent<Health>();
+        _mover.Move(_inputReader.Input);
+        _animator.ProcessMovingAnimations(_inputReader.Input);
+    }
+
+    public void Initialize(ThirdPersonActions inputActions)
+    {
+        _inputReader = GetComponent<PlayerInputReader>();
         _mover = GetComponent<PlayerMover>();
+        _health = GetComponent<Health>();
         _animator = GetComponent<PlayerAnimator>();
         _attacker = GetComponent<PlayerAttacker>();
         _sound = GetComponent<StepSound>();
         _hitbox = GetComponent<Hitbox>();
 
-        _attacker.Initialize(actions, _camera);
-        _mover.Initialize(_camera, _cameraRotator, actions);
-        _animator.Initialize(actions);
+        _inputReader.Initialize(inputActions);
+        _mover.Initialize(_camera, _cameraRotator);
+        _attacker.Initialize(_camera);
         _hitbox.Initialize(this);
 
+        _inputReader.JumpPressed += _mover.Jump;
+        _inputReader.AttackPressed += _attacker.OnAttack;
+        _inputReader.ChangeWeaponPressed += _attacker.OnChangeWeapon;
         _health.Dead += OnDead;
         _attacker.Attack += _animator.OnAttack;
         _attacker.MeleeWeaponChosen += _animator.OnMeleeWeaponChosen;
@@ -57,11 +73,6 @@ public class Player : MonoBehaviour, IDamageable
         _mover.Jumped += _animator.OnJump;
         _mover.Jumped += _sound.OnJumpStarted;
         _mover.Landed += _sound.OnLanded;
-    }
-
-    public void SetHealthBar(Bar bar)
-    {
-        bar.Initialize(_health);
     }
 
     public void Restart()

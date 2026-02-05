@@ -10,7 +10,6 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private MeleeWeaponSound _meleeWeaponSound;
 
     private Weapon _activeWeapon;
-    private ThirdPersonActions _actions;
     private bool _canSwitchWeapon = true;
 
     public event Action Attack;
@@ -29,22 +28,17 @@ public class PlayerAttacker : MonoBehaviour
 
     private void OnDisable()
     {
-        _actions.Player.Attack.started -= OnAttack;
-        _actions.Player.Changeweapon.started -= OnChangeWeapon;
         _meleeWeapon.AttackCulmination -= _meleeWeaponSound.PlayAttackSound;
         _meleeWeapon.DamageDid -= _meleeWeaponSound.PlayDamageSound; 
         _fireWeapon.AttackStarted -= OnAttackStarted;
         _fireWeapon.ShotEnded -= OnAttackEnded;
     }
 
-    public void Initialize(ThirdPersonActions actions, Camera camera)
+    public void Initialize(Camera camera)
     {
         _fireWeapon.Initialize(camera);
         _activeWeapon = _fireWeapon;
         _meleeWeapon.gameObject.SetActive(false);
-        _actions = actions;
-        _actions.Player.Attack.started += OnAttack;
-        _actions.Player.Changeweapon.started += OnChangeWeapon;
     }
 
     public void Restart()
@@ -59,23 +53,13 @@ public class PlayerAttacker : MonoBehaviour
         }
     }
 
-    private void OnAttack(InputAction.CallbackContext context)
+    public void OnAttack()
     {
         if (_activeWeapon.TryAttack())
             Attack?.Invoke();
     }
 
-    private void OnAttackStarted()
-    {
-        _canSwitchWeapon = false;
-    }
-
-    private void OnAttackEnded()
-    {
-        _canSwitchWeapon = true;
-    }
-
-    private void OnChangeWeapon(InputAction.CallbackContext context)
+    public void OnChangeWeapon()
     {
         if (_canSwitchWeapon == false)
             return;
@@ -90,6 +74,16 @@ public class PlayerAttacker : MonoBehaviour
             SwitchWeapon(_fireWeapon);
             FireWeaponChosen?.Invoke();
         }
+    }
+
+    private void OnAttackStarted()
+    {
+        _canSwitchWeapon = false;
+    }
+
+    private void OnAttackEnded()
+    {
+        _canSwitchWeapon = true;
     }
 
     private void SwitchWeapon(Weapon weapon)

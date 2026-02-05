@@ -39,18 +39,21 @@ public class EnemySpawner : MonoBehaviour
     public void StartRound(float roundLength, int enemiesCount, int bossesCount, float startSpawnDelay)
     {
         float spawnRate = roundLength / enemiesCount;
-
-        if (_spawnCoroutine != null)
-            StopCoroutine(_spawnCoroutine);
-
+        Stop();
         _spawnCoroutine = StartCoroutine(RepeatingSpawn(spawnRate, enemiesCount, bossesCount, startSpawnDelay));
     }
 
     public void Restart()
     {
-        StopCoroutine(_spawnCoroutine);
+        Stop();
         _enemyPool.Restart();
         _bossPool.Restart();
+    }
+
+    public void Stop()
+    {
+        if (_spawnCoroutine != null)
+            StopCoroutine(_spawnCoroutine);
     }
 
     private IEnumerator RepeatingSpawn(float spawnRate, int enemiesCount, int bossesCount, float startSpawnDelay)
